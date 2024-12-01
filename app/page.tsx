@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/app/utils/supabase/server";
 
 import Tasks from "@/app/(pages)/tasks/page";
-import ClearActions from "@/app/components/task/clear-task";
 import SignOutButton from "@/app/components/auth/signout-button";
 
 export default async function Home() {
@@ -23,7 +22,6 @@ export default async function Home() {
           <h1 className="w-full font-semibold text-2xl text-sky-500">Task mine</h1>
         </div>
         <Tasks />
-        <ClearActions />
       </div>
       <SignOutButton />
     </main>
