@@ -47,12 +47,12 @@ export default function Task({ task }: { task: Task }) {
         // }}
         >
           <Checkbox
-            className="mt-0.5 w-5 h-5"
+            className={`mt-0.5 w-5 h-5 ${task.is_complete ? "opacity-30" : "opacity-100"}`}
             id={task?.id as unknown as string}
             checked={task?.is_complete}
             onCheckedChange={() => onCheckChange(task)}
           />
-          <h3 className="p-2">{description}</h3>
+          <h3 className={`p-2 ${task.is_complete ? "opacity-30" : "opacity-100"}`}>{description}</h3>
         </form>
         <Button
           variant="ghost"
