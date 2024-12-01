@@ -16,7 +16,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col gap-4 items-center justify-center p-3">
+    <main className="min-h-screen flex flex-col gap-4 items-center sm:justify-center justify-start py-10 px-5">
       <div className="flex flex-col w-full max-w-3xl">
         <div className="flex items-center gap-4 pb-4 w-full">
           <CheckCircleIcon className="h-8 w-8 text-sky-500 dark:text-sky-400" />
