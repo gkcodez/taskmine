@@ -10,7 +10,7 @@ export default function AddTask() {
 
   return (
     <form
-      className="flex outline-none items-center gap-2"
+      className="flex outline-none items-center gap-2 mb-2"
       ref={ref}
       action={async (formData) => {
         await addTask(formData);
@@ -22,7 +22,7 @@ export default function AddTask() {
       </Button>
       <Input
         id="task"
-        className="p-0 border-none focus-visible:ring-transparent"
+        className="p-2 focus-visible:ring-transparent"
         name="task"
         placeholder="Add new task"
         required

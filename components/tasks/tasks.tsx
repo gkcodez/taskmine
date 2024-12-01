@@ -13,8 +13,9 @@ export default async function Tasks() {
   }
 
   return (
-    <div className="flex-1 overflow-auto">
-      <div className="flex flex-col">
+    <div className="flex-1 overflow-auto border rounded-lg p-3">
+        <AddTask />
+      <div className="flex flex-col gap-2 max-h-96 overflow-y-scroll">
         {tasks &&
           tasks
             .filter((task) => {
@@ -31,7 +32,6 @@ export default async function Tasks() {
             .map((task) => {
               return <Task key={task.id} task={task} />;
             })}
-        <AddTask />
       </div>
     </div>
   );

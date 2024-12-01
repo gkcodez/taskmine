@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 export default function SignOutButton() {
   return (
     <Button
-      variant="ghost"
+      variant="destructive"
       onClick={async () => {
         await signout();
       }}

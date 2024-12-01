@@ -34,7 +34,7 @@ export default function TaskData({ task }: { task: Task }) {
 
   return (
     <Input
-      className="p-0 border-none focus-visible:ring-transparent"
+      className="p-2 focus-visible:ring-transparent"
       value={description}
       onChange={handleInputChange}
     />

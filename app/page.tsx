@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-import Todos from "@/components/tasks/tasks";
+import Tasks from "@/components/tasks/tasks";
 import ClearActions from "@/components/tasks/clear-actions";
 import SignOutButton from "@/components/auth/signout-button";
 
@@ -16,13 +16,13 @@ export default async function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col gap-4 items-center justify-center">
-      <div className="flex flex-col max-w-2xl border rounded-lg shadow-lg p-4">
-        <div className="flex items-center gap-4 pb-4">
-          <CheckCircleIcon className="h-8 w-8 text-gray-500 dark:text-gray-400" />
-          <h1 className="font-semibold text-2xl">Taskmine</h1>
+    <main className="min-h-screen flex flex-col gap-4 items-center justify-center p-3">
+      <div className="flex flex-col w-full max-w-3xl">
+        <div className="flex items-center gap-4 pb-4 w-full">
+          <CheckCircleIcon className="h-8 w-8 text-sky-500 dark:text-sky-400" />
+          <h1 className="w-full font-semibold text-2xl text-sky-500">Task mine</h1>
         </div>
-        <Todos />
+        <Tasks />
         <ClearActions />
       </div>
       <SignOutButton />
