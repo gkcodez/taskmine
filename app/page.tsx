@@ -1,10 +1,10 @@
 
 import { redirect } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/app/utils/supabase/server";
 
-import Tasks from "@/components/tasks/tasks";
-import ClearActions from "@/components/tasks/clear-actions";
-import SignOutButton from "@/components/auth/signout-button";
+import Tasks from "@/app/(pages)/tasks/page";
+import ClearActions from "@/app/components/task/clear-task";
+import SignOutButton from "@/app/components/auth/signout-button";
 
 export default async function Home() {
   const supabase = await createClient();
