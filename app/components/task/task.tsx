@@ -1,7 +1,7 @@
 
 "use client";
 
-import { deleteAllTasks, deleteCompletedTasks, deleteTask, editTask, onCheckChange } from "@/app/actions/task/task";
+import { deleteTask,  onCheckChange } from "@/app/actions/task/task";
 import type { Task } from "@/app/models/task";
 import { Separator } from "../ui/separator";
 import { useEffect, useState } from "react";
@@ -11,30 +11,30 @@ import { FiEdit, FiTrash } from "react-icons/fi";
 
 export default function Task({ task }: { task: Task }) {
   const [description, setDescription] = useState(task.task);
-  const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
-    null,
-  );
+  // const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
+  //   null,
+  // );
 
   useEffect(() => {
     setDescription(task.task);
   }, [task.task]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setDescription(newValue);
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newValue = e.target.value;
+  //   setDescription(newValue);
 
-    // Clear previous timeout if exists
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
+  //   // Clear previous timeout if exists
+  //   if (typingTimeout) {
+  //     clearTimeout(typingTimeout);
+  //   }
 
-    // Set a new timeout
-    setTypingTimeout(
-      setTimeout(async () => {
-        await editTask({ ...task, task: e.target.value });
-      }, 2000),
-    );
-  };
+  //   // Set a new timeout
+  //   setTypingTimeout(
+  //     setTimeout(async () => {
+  //       await editTask({ ...task, task: e.target.value });
+  //     }, 2000),
+  //   );
+  // };
   return (
     <div>
       <div className="flex items-center gap-1">
