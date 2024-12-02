@@ -7,20 +7,24 @@ import { addTask } from "@/app/actions/task/task";
 import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { FiPlus } from "react-icons/fi";
 import React from "react";
+import { ITask } from "@/app/models/task";
 
 export default function AddTask() {
   const formRef = useRef<HTMLFormElement>(null);
   const [open, setOpen] = React.useState(false)
 
   const addNewTask = async (formData: any) => {
-    await addTask(formData);
+    const task: ITask = {
+      task: formData.get("task") as string,
+      is_complete: false,
+      inserted_at: new Date()
+    }
+    await addTask(task);
     formRef.current?.reset();
     setOpen(false)
   }
 
-  const handleSaveChanges = () => {
-    formRef.current?.requestSubmit(); // Submit the form, which triggers the server action
-  };
+  const handleSaveChanges = () => { formRef.current?.requestSubmit(); };
 
   return (   
     <Dialog  open={open} onOpenChange={setOpen}>
@@ -46,7 +50,7 @@ export default function AddTask() {
           />
         </form>
 
-        <DialogFooter>
+        <DialogFooter className="flex items-center justify-center gap-2">
           <DialogClose asChild>
             <Button type="button" variant="secondary"> 
               Discard

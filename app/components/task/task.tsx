@@ -1,50 +1,22 @@
 
 "use client";
 
-import { deleteTask,  onCheckChange } from "@/app/actions/task/task";
-import type { Task } from "@/app/models/task";
+import { deleteTask,   onCheckChange } from "@/app/actions/task/task";
+import type { ITask } from "@/app/models/task";
 import { Separator } from "../ui/separator";
-import { useEffect, useState } from "react";
 import { Checkbox } from "../ui/checkbox";
 import { Button } from "../ui/button";
-import { FiEdit, FiTrash } from "react-icons/fi";
+import { FiClock, FiTrash } from "react-icons/fi";
+import UpdateTask from "./update-task";
 
-export default function Task({ task }: { task: Task }) {
-  const [description, setDescription] = useState(task.task);
-  // const [typingTimeout, setTypingTimeout] = useState<NodeJS.Timeout | null>(
-  //   null,
-  // );
+export default function Task({ task }: { task: ITask }) {
 
-  useEffect(() => {
-    setDescription(task.task);
-  }, [task.task]);
 
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newValue = e.target.value;
-  //   setDescription(newValue);
-
-  //   // Clear previous timeout if exists
-  //   if (typingTimeout) {
-  //     clearTimeout(typingTimeout);
-  //   }
-
-  //   // Set a new timeout
-  //   setTypingTimeout(
-  //     setTimeout(async () => {
-  //       await editTask({ ...task, task: e.target.value });
-  //     }, 2000),
-  //   );
-  // };
   return (
     <div>
       <div className="flex items-center gap-1">
         <form
           className="flex-1 flex items-center"
-        // action={async () => {
-        //   "use server";
-
-        //   await editTask(task);
-        // }}
         >
           <Checkbox
             className={`mt-0.5 w-5 h-5 ${task.is_complete ? "opacity-30" : "opacity-100"}`}
@@ -52,7 +24,7 @@ export default function Task({ task }: { task: Task }) {
             checked={task?.is_complete}
             onCheckedChange={() => onCheckChange(task)}
           />
-          <h3 className={`p-2 ${task.is_complete ? "opacity-30" : "opacity-100"}`}>{description}</h3>
+          <h3 className={`p-2 ${task.is_complete ? "opacity-30" : "opacity-100"}`}>{task.task}</h3>
         </form>
         <Button
           variant="ghost"
@@ -63,9 +35,10 @@ export default function Task({ task }: { task: Task }) {
           }}
         >
           <div>
-            <FiEdit className="text-gray-600" />
+            <FiClock className="text-gray-600" />
           </div>
         </Button>
+        <UpdateTask currentTask={task} />
         <Button
           variant="ghost"
           size="icon"

@@ -5,7 +5,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 import { Task } from "@/app/models/task";
 
-export async function addTask(formData: FormData) {
+export async function addTask(task: Task) {
   const supabase = await createClient();
 
   const {
@@ -17,9 +17,9 @@ export async function addTask(formData: FormData) {
     .insert([
       {
         user_id: user?.id,
-        task: formData.get("task") as string,
-        is_complete: false,
-        inserted_at: new Date(),
+        task: task.task,
+        is_complete: task.is_complete,
+        inserted_at: task.inserted_at,
       },
     ])
     .select();
@@ -31,7 +31,7 @@ export async function addTask(formData: FormData) {
   revalidatePath("/");
 }
 
-export async function editTask(task: Task) {
+export async function editTask(taskId: number, task: Task) {
   const supabase = await createClient();
 
   const {
@@ -41,7 +41,7 @@ export async function editTask(task: Task) {
   const { error } = await supabase
     .from("tasks")
     .update({ task: task.task })
-    .eq("id", task.id)
+    .eq("id", taskId)
     .eq("user_id", user?.id)
     .select();
 
@@ -50,7 +50,7 @@ export async function editTask(task: Task) {
   }
 }
 
-export async function deleteTask(id: number) {
+export async function deleteTask(id?: number) {
   const supabase = await createClient();
 
   const { error } = await supabase.from("tasks").delete().eq("id", id);
