@@ -52,7 +52,7 @@ export default function Task({ task }: { task: ITask }) {
           </div>
         </Button>
       </div>
-      <Separator className="border-b border-gray-100" />
+      <Separator className="border-b border-gray-50" />
     </div>
   );
 }
