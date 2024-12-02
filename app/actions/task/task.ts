@@ -3,9 +3,9 @@
 
 import { createClient } from "@/app/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { Task } from "@/app/models/task";
+import { ITask } from "@/app/models/task";
 
-export async function addTask(task: Task) {
+export async function addTask(task: ITask) {
   const supabase = await createClient();
 
   const {
@@ -31,7 +31,7 @@ export async function addTask(task: Task) {
   revalidatePath("/");
 }
 
-export async function editTask(taskId: number, task: Task) {
+export async function editTask(taskId: number, task: ITask) {
   const supabase = await createClient();
 
   const {
@@ -96,7 +96,7 @@ export async function deleteAllTasks() {
   revalidatePath("/");
 }
 
-export async function onCheckChange(task: Task) {
+export async function onCheckChange(task: ITask) {
   const supabase = await createClient();
 
   const { error } = await supabase
