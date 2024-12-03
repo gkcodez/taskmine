@@ -10,16 +10,16 @@ import { FocusChart } from "@/app/components/pomodoro/focus-chart"
 export default function Pomodoro() {
     const timer = {
         Type: {
-          Focus: "Focus",
-          ShortBreak: "ShortBreak",
-          LongBreak: "LongBreak",
+            Focus: "Focus",
+            ShortBreak: "ShortBreak",
+            LongBreak: "LongBreak",
         },
         Duration: {
-          Focus: 3,
-          ShortBreak: 300,
-          LongBreak: 900,
+            Focus: 1200,
+            ShortBreak: 300,
+            LongBreak: 900,
         }
-      };
+    };
     const [timeRemaining, setTimeRemaining] = useState(timer.Duration.Focus)
     const [isRunning, setIsRunning] = useState(false)
     const [selectedTab, setSelectedTab] = useState("focus")
@@ -76,31 +76,31 @@ export default function Pomodoro() {
 
     const timerRunningAudioRef = useRef<HTMLAudioElement | undefined>(
         typeof Audio !== "undefined"
-          ? new Audio("\\audio\\ticking-slow.mp3")
-          : undefined
-      );
-    
-      const timerFinishedAudioRef = useRef<HTMLAudioElement | undefined>(
-        typeof Audio !== "undefined"
-          ? new Audio("\\audio\\timer-finished.mp3")
-          : undefined
-      );
-    
-      useMemo(() => {
-        if (timerRunningAudioRef && timerRunningAudioRef.current) {
-          timerRunningAudioRef.current.loop = true;
-          setTimerRunningAudio(timerRunningAudioRef.current);
-        }
-      }, [timerRunningAudioRef]);
-    
-      useMemo(() => {
-        if (timerFinishedAudioRef && timerFinishedAudioRef.current) {
-          timerFinishedAudioRef.current.loop = false;
-          setTimerFinishedAudio(timerFinishedAudioRef.current);
-        }
-      }, [timerFinishedAudioRef]);
+            ? new Audio("\\audio\\ticking-slow.mp3")
+            : undefined
+    );
 
-      
+    const timerFinishedAudioRef = useRef<HTMLAudioElement | undefined>(
+        typeof Audio !== "undefined"
+            ? new Audio("\\audio\\timer-finished.mp3")
+            : undefined
+    );
+
+    useMemo(() => {
+        if (timerRunningAudioRef && timerRunningAudioRef.current) {
+            timerRunningAudioRef.current.loop = true;
+            setTimerRunningAudio(timerRunningAudioRef.current);
+        }
+    }, [timerRunningAudioRef]);
+
+    useMemo(() => {
+        if (timerFinishedAudioRef && timerFinishedAudioRef.current) {
+            timerFinishedAudioRef.current.loop = false;
+            setTimerFinishedAudio(timerFinishedAudioRef.current);
+        }
+    }, [timerFinishedAudioRef]);
+
+
     return (
         <div className="flex flex-col items-start justify-start w-full">
             <div className="flex flex-col items-start justify-start gap-2 w-full">
@@ -126,12 +126,17 @@ export default function Pomodoro() {
                             </CardContent>
                             <CardFooter>
                                 <div className="flex gap-4">
-                                    <Button onClick={handleStart} disabled={isRunning}>
-                                        <FiPlay /> Start
-                                    </Button>
-                                    <Button onClick={handlePause} disabled={!isRunning}>
-                                        <FiPause /> Pause
-                                    </Button>
+                                    {!isRunning &&
+                                        <Button onClick={handleStart}>
+                                            <FiPlay /> Start
+                                        </Button>
+                                    }
+                                    {
+                                        isRunning && <Button onClick={handlePause}>
+                                            <FiPause /> Pause
+                                        </Button>
+                                    }
+
                                     <Button onClick={handleReset}>
                                         <FiRefreshCw /> Reset</Button>
                                 </div>
@@ -141,8 +146,8 @@ export default function Pomodoro() {
                     <TabsContent value="shortbreak">
                         <Card>
                             <CardHeader>
-                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Short Break</CardTitle>
-                            <CardDescription>
+                                <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Short Break</CardTitle>
+                                <CardDescription>
                                     Time to take a short break.
                                 </CardDescription>
                             </CardHeader>
@@ -169,7 +174,7 @@ export default function Pomodoro() {
                     <TabsContent value="longbreak">
                         <Card>
                             <CardHeader>
-                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Long Break</CardTitle>
+                                <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Long Break</CardTitle>
                                 <CardDescription>
                                     Time to relax!
                                 </CardDescription>
