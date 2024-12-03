@@ -2,6 +2,7 @@
 
 import { signout } from "@/app/actions/auth/auth";
 import { Button } from "@/app/components/ui/button";
+import { FiLogOut } from "react-icons/fi";
 
 export default function SignOutButton() {
   return (
@@ -11,7 +12,7 @@ export default function SignOutButton() {
         await signout();
       }}
     >
-      Sign Out
+      <FiLogOut />
     </Button>
   );
 }
