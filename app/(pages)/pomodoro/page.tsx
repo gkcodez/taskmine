@@ -158,13 +158,18 @@ export default function Pomodoro() {
 
                             </CardContent>
                             <CardFooter>
-                                <div className="flex gap-4">
-                                    <Button onClick={handleStart} disabled={isRunning}>
-                                        <FiPlay /> Start
-                                    </Button>
-                                    <Button onClick={handlePause} disabled={!isRunning}>
-                                        <FiPause /> Pause
-                                    </Button>
+                            <div className="flex gap-4">
+                                    {!isRunning &&
+                                        <Button onClick={handleStart}>
+                                            <FiPlay /> Start
+                                        </Button>
+                                    }
+                                    {
+                                        isRunning && <Button onClick={handlePause}>
+                                            <FiPause /> Pause
+                                        </Button>
+                                    }
+
                                     <Button onClick={handleReset}>
                                         <FiRefreshCw /> Reset</Button>
                                 </div>
@@ -185,13 +190,18 @@ export default function Pomodoro() {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <div className="flex gap-4">
-                                    <Button onClick={handleStart} disabled={isRunning}>
-                                        <FiPlay /> Start
-                                    </Button>
-                                    <Button onClick={handlePause} disabled={!isRunning}>
-                                        <FiPause /> Pause
-                                    </Button>
+                            <div className="flex gap-4">
+                                    {!isRunning &&
+                                        <Button onClick={handleStart}>
+                                            <FiPlay /> Start
+                                        </Button>
+                                    }
+                                    {
+                                        isRunning && <Button onClick={handlePause}>
+                                            <FiPause /> Pause
+                                        </Button>
+                                    }
+
                                     <Button onClick={handleReset}>
                                         <FiRefreshCw /> Reset</Button>
                                 </div>
