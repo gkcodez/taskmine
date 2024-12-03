@@ -1,24 +1,30 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useRef } from "react"
 import { Button } from "@/app/components/ui/button"
-import { FiPause, FiPlay, FiRefreshCw } from "react-icons/fi"
+import { FiBell, FiClock, FiPause, FiPlay, FiRefreshCw } from "react-icons/fi"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/app/components/ui/card"
 import { FocusChart } from "@/app/components/pomodoro/focus-chart"
 
 export default function Pomodoro() {
-    const timerData = {
-        focus: 1200,
-        shortbreak: 300,
-        longbreak: 900
-    }
-    const [timeRemaining, setTimeRemaining] = useState(timerData.focus)
+    const timer = {
+        Type: {
+          Focus: "Focus",
+          ShortBreak: "ShortBreak",
+          LongBreak: "LongBreak",
+        },
+        Duration: {
+          Focus: 3,
+          ShortBreak: 300,
+          LongBreak: 900,
+        }
+      };
+    const [timeRemaining, setTimeRemaining] = useState(timer.Duration.Focus)
     const [isRunning, setIsRunning] = useState(false)
     const [selectedTab, setSelectedTab] = useState("focus")
-
-
-
+    const [timerRunningAudio, setTimerRunningAudio] = useState<HTMLAudioElement>();
+    const [timerFinishedAudio, setTimerFinishedAudio] = useState<HTMLAudioElement>();
 
     useEffect(() => {
         let interval: any
@@ -28,37 +34,73 @@ export default function Pomodoro() {
             }, 1000)
         } else if (timeRemaining === 0) {
             setIsRunning(false)
+            timerRunningAudio?.pause()
+            timerFinishedAudio?.play()
         }
         return () => clearInterval(interval)
-    }, [isRunning, timeRemaining])
+    }, [isRunning, timeRemaining, timerFinishedAudio, timerRunningAudio])
 
     const handleStart = () => {
         setIsRunning(true)
+        timerFinishedAudio?.pause()
+        timerRunningAudio?.play()
     }
     const handlePause = () => {
         setIsRunning(false)
+        timerRunningAudio?.pause()
+        timerFinishedAudio?.pause()
     }
     const handleReset = () => {
         if (selectedTab == "focus") {
-            setTimeRemaining(timerData.focus)
+            setTimeRemaining(timer.Duration.Focus)
         } else if (selectedTab == "shortbreak") {
-            setTimeRemaining(timerData.shortbreak)
+            setTimeRemaining(timer.Duration.ShortBreak)
         } else if (selectedTab == "longbreak") {
-            setTimeRemaining(timerData.longbreak)
+            setTimeRemaining(timer.Duration.LongBreak)
         }
         setIsRunning(false)
+        timerRunningAudio?.pause()
+        timerFinishedAudio?.pause()
     }
 
     function selectTab(tab: string) {
         if (tab == "focus") {
-            setTimeRemaining(timerData.focus)
+            setTimeRemaining(timer.Duration.Focus)
         } else if (tab == "shortbreak") {
-            setTimeRemaining(timerData.shortbreak)
+            setTimeRemaining(timer.Duration.ShortBreak)
         } else if (tab == "longbreak") {
-            setTimeRemaining(timerData.longbreak)
+            setTimeRemaining(timer.Duration.LongBreak)
         }
         setSelectedTab(tab)
     }
+
+    const timerRunningAudioRef = useRef<HTMLAudioElement | undefined>(
+        typeof Audio !== "undefined"
+          ? new Audio("\\audio\\ticking-slow.mp3")
+          : undefined
+      );
+    
+      const timerFinishedAudioRef = useRef<HTMLAudioElement | undefined>(
+        typeof Audio !== "undefined"
+          ? new Audio("\\audio\\timer-finished.mp3")
+          : undefined
+      );
+    
+      useMemo(() => {
+        if (timerRunningAudioRef && timerRunningAudioRef.current) {
+          timerRunningAudioRef.current.loop = true;
+          setTimerRunningAudio(timerRunningAudioRef.current);
+        }
+      }, [timerRunningAudioRef]);
+    
+      useMemo(() => {
+        if (timerFinishedAudioRef && timerFinishedAudioRef.current) {
+          timerFinishedAudioRef.current.loop = false;
+          setTimerFinishedAudio(timerFinishedAudioRef.current);
+        }
+      }, [timerFinishedAudioRef]);
+
+      
     return (
         <div className="flex flex-col items-start justify-start w-full">
             <div className="flex flex-col items-start justify-start gap-2 w-full">
@@ -71,7 +113,7 @@ export default function Pomodoro() {
                     <TabsContent value="focus">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Focus</CardTitle>
+                                <CardTitle className="flex items-center justify-start gap-2"><FiClock /> Focus</CardTitle>
                                 <CardDescription>
                                     Focus on one task at a time.
                                 </CardDescription>
@@ -99,8 +141,8 @@ export default function Pomodoro() {
                     <TabsContent value="shortbreak">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Short Break</CardTitle>
-                                <CardDescription>
+                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Short Break</CardTitle>
+                            <CardDescription>
                                     Time to take a short break.
                                 </CardDescription>
                             </CardHeader>
@@ -127,7 +169,7 @@ export default function Pomodoro() {
                     <TabsContent value="longbreak">
                         <Card>
                             <CardHeader>
-                                <CardTitle>Long Break</CardTitle>
+                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Long Break</CardTitle>
                                 <CardDescription>
                                     Time to relax!
                                 </CardDescription>
