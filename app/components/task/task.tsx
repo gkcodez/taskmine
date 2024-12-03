@@ -56,6 +56,10 @@ export default function Task({ task }: { task: ITask }) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
+            <DropdownMenuLabel>Pomodoro</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem  onClick={() => console.log("Focus started!")}><FiTarget /> Focus</DropdownMenuItem>
+
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild><UpdateTask currentTask={task}/></DropdownMenuItem>

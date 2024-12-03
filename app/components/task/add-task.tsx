@@ -34,7 +34,7 @@ export default function AddTask() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-            <Button type="button" variant="default" size="icon" className="rounded-full">
+            <Button type="button" variant="secondary" size="icon" className="rounded-full">
               <FiPlus/>
             </Button>
       </DialogTrigger>

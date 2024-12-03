@@ -103,7 +103,7 @@ export default function Pomodoro() {
 
     return (
         <div className="flex flex-col items-start justify-start w-full min-h-[calc(100vh-80px)] gap-2">
-                <Tabs defaultValue="focus" className="w-full ">
+                <Tabs defaultValue="focus" className="w-full flex-grow">
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger disabled={isRunning} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
                         <TabsTrigger disabled={isRunning} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
@@ -114,7 +114,7 @@ export default function Pomodoro() {
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-start gap-2"><FiClock /> Focus</CardTitle>
                                 <CardDescription>
-                                    Focus on one task at a time.
+                                    Implement focus for tasks!
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">

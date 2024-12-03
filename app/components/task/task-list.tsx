@@ -4,7 +4,7 @@ import { createClient } from "@/app/utils/supabase/server";
 import { Separator } from "../ui/separator";
 import AddTask from "./add-task";
 import { Button } from "../ui/button";
-import { FiMenu, FiTrash } from "react-icons/fi";
+import { FiDownload, FiMenu, FiSearch, FiSliders, FiTrash } from "react-icons/fi";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import TaskActions from "./task-action";
@@ -32,7 +32,12 @@ export default async function TaskList() {
               tasks.length} )
               <div className="flex items-center justify-center gap-2">
                 <AddTask />
-                {/* <Button variant="secondary" size="icon" className="rounded-full"><FiTrash/></Button> */}
+                <Button variant="secondary" size="icon" className="rounded-full">
+                      <FiSearch /> 
+                    </Button>
+                    <Button variant="secondary" size="icon" className="rounded-full">
+                      <FiSliders />
+                    </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button type="button" variant="secondary" size="icon" className="rounded-full">
@@ -40,10 +45,17 @@ export default async function TaskList() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
-                    <DropdownMenuLabel>Delete</DropdownMenuLabel>
+                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem><DeleteAllCompletedTask/></DropdownMenuItem>
                     <DropdownMenuItem><DeleteAllTask/></DropdownMenuItem>
+                    <DropdownMenuLabel>Miscellaneous</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>    
+                    <Button variant="ghost" className="w-full flex items-start justify-start px-2">
+                      <FiTrash /> Recycle bin
+                    </Button>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
