@@ -4,41 +4,35 @@ import { createClient } from "@/app/utils/supabase/server";
 import { Separator } from "../ui/separator";
 import AddTask from "./add-task";
 import { Button } from "../ui/button";
-import { FiCheck, FiDelete, FiMenu, FiMinus, FiMoreHorizontal, FiMoreVertical, FiPause, FiPlay, FiPlus, FiRefreshCw, FiTrash } from "react-icons/fi";
+import { FiMenu, FiTrash } from "react-icons/fi";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import TaskActions from "./task-action";
+import DeleteAllCompletedTask from "./delete-all-completed-task";
+import DeleteAllTask from "./delete-all-task";
 
 export default async function TaskList() {
   const supabase = await createClient();
 
-  const { data: tasks, error } = await supabase.from("tasks").select("*");
+  const { data: tasks, error } = await supabase.from("tasks").select("*").eq("is_deleted", false);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  const deleteCompletedTasks = async () => {
-    "use client"
-    await deleteCompletedTasks();
-  }
-
-  const deleteAllTasks = async () => {
-    "use client"
-    await deleteAllTasks();
-  }
   return (
-        <Card className="flex flex-col w-full min-h-[calc(100vh-80px)]">
+        <Card className="flex flex-col w-full min-h-[calc(100vh-180px)]">
           <CardHeader className="w-full h-20">
             <CardTitle className="flex items-center justify-between gap-2 ">Tasks ( {tasks &&
               tasks
                 .filter((task) => {
-                  return task.is_complete == true;
+                  return task.is_completed == true;
                 }).length
             } / {tasks &&
               tasks.length} )
               <div className="flex items-center justify-center gap-2">
                 <AddTask />
+                {/* <Button variant="secondary" size="icon" className="rounded-full"><FiTrash/></Button> */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button type="button" variant="secondary" size="icon" className="rounded-full">
@@ -48,8 +42,8 @@ export default async function TaskList() {
                   <DropdownMenuContent>
                     <DropdownMenuLabel>Delete</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem><FiCheck /> Delete Completed Tasks</DropdownMenuItem>
-                    <DropdownMenuItem><FiMinus /> Delete All Tasks</DropdownMenuItem>
+                    <DropdownMenuItem><DeleteAllCompletedTask/></DropdownMenuItem>
+                    <DropdownMenuItem><DeleteAllTask/></DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -64,7 +58,7 @@ export default async function TaskList() {
                 {tasks &&
                   tasks
                     .filter((task) => {
-                      return task.is_complete == false;
+                      return task.is_completed == false;
                     })
                     .map((task) => {
                       return <Task key={task.id} task={task} />;
@@ -72,7 +66,7 @@ export default async function TaskList() {
                 {tasks &&
                   tasks
                     .filter((task) => {
-                      return task.is_complete;
+                      return task.is_completed;
                     })
                     .map((task) => {
                       return <Task key={task.id} task={task} />;

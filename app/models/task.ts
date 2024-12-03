@@ -3,6 +3,9 @@ export interface ITask {
     id?: number;
     user_id?: string;
     task: string;
-    is_complete: boolean;
-    inserted_at: Date;
+    priority?: number;
+    is_completed: boolean;
+    is_deleted: boolean;
+    created_on: Date;
+    updated_on: Date;
   }

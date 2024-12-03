@@ -5,10 +5,11 @@ import { deleteTask, onCheckChange } from "@/app/actions/task/task";
 import type { ITask } from "@/app/models/task";
 import { Separator } from "../ui/separator";
 import { Checkbox } from "../ui/checkbox";
-import { FiEdit, FiMeh, FiMoreVertical, FiTarget, FiTrash } from "react-icons/fi";
+import { FiChevronDown, FiChevronsUp, FiChevronUp, FiEdit, FiMeh, FiMinus, FiMoreVertical, FiTarget, FiTrash } from "react-icons/fi";
 import UpdateTask from "./update-task";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
+import AddTask from "./add-task";
 
 export default function Task({ task }: { task: ITask }) {
 
@@ -23,27 +24,41 @@ export default function Task({ task }: { task: ITask }) {
           className="flex-1 flex items-center"
         >
           <Checkbox
-            className={`mt-0.5 w-5 h-5 ${task.is_complete ? "opacity-30" : "opacity-100"}`}
+            className={`mt-0.5 w-5 h-5 ${task.is_completed ? "opacity-30" : "opacity-100"}`}
             id={task?.id as unknown as string}
-            checked={task?.is_complete}
+            checked={task?.is_completed}
             onCheckedChange={() => onCheckChange(task)}
           />
-          <h3 className={`p-2 ${task.is_complete ? "opacity-30" : "opacity-100"}`}>{task.task}</h3>
+          <h3 className={`p-2 ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.task}</h3>
+          
         </form>
-        <div>
+        <div className="flex items-center justify-center gap-2">
+        {
+            task.priority == 1 &&
+            <FiChevronsUp className="text-red-600" />
+          }
+                    {
+            task.priority == 2 &&
+            <FiChevronUp className="text-orange-600" />
+          }
+                    {
+            task.priority == 3 &&
+            <FiMinus className="text-yellow-600" />
+          }
+                    {
+            task.priority == 4 &&
+            <FiChevronDown className="text-green-600" />
+          }
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button type="button" variant="secondary" size="icon" className="rounded-full">
+              <Button type="button" variant="ghost" size="icon" className="rounded-full">
                 <FiMoreVertical />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>Pomodoro</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem><FiTarget /> Focus</DropdownMenuItem>
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem><FiEdit /> Edit</DropdownMenuItem>
+              <DropdownMenuItem asChild><UpdateTask currentTask={task}/></DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -17,9 +17,13 @@ export default function AddTask() {
   const addNewTask = async (formData: any) => {
     const task: ITask = {
       task: formData.get("task") as string,
-      is_complete: false,
-      inserted_at: new Date()
+      priority: formData.get("priority") as number,
+      is_completed: false,
+      is_deleted: false,
+      created_on: new Date(),
+      updated_on: new Date()
     }
+    console.log(task)
     await addTask(task);
     formRef.current?.reset();
     setOpen(false)
@@ -40,7 +44,7 @@ export default function AddTask() {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <form
-          className="flex outline-none items-center gap-2"
+          className="flex flex-col outline-none items-center gap-2"
           ref={formRef}
           action={addNewTask}
         >
@@ -50,6 +54,13 @@ export default function AddTask() {
             name="task"
             placeholder="Read books"
             required
+          />
+            <Input
+            id="priority"
+            className="p-2 focus-visible:ring-transparent"
+            name="priority"
+            type="number"
+            placeholder="Enter the task priority. Eg: 1"
           />
         </form>
 

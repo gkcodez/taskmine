@@ -18,8 +18,11 @@ export async function addTask(task: ITask) {
       {
         user_id: user?.id,
         task: task.task,
-        is_complete: task.is_complete,
-        inserted_at: task.inserted_at,
+        priority: task.priority ? task.priority : null,
+        is_completed: task.is_completed,
+        is_deleted: task.is_deleted,
+        created_on: task.created_on,
+        updated_on: task.updated_on,
       },
     ])
     .select();
@@ -31,7 +34,7 @@ export async function addTask(task: ITask) {
   revalidatePath("/");
 }
 
-export async function editTask(taskId: number, task: ITask) {
+export async function editTask(task: ITask) {
   const supabase = await createClient();
 
   const {
@@ -40,8 +43,8 @@ export async function editTask(taskId: number, task: ITask) {
 
   const { error } = await supabase
     .from("tasks")
-    .update({ task: task.task })
-    .eq("id", taskId)
+    .update({ task: task.task, priority: task.priority ? task.priority : null, updated_on: task.updated_on })
+    .eq("id", task.id)
     .eq("user_id", user?.id)
     .select();
 
@@ -53,7 +56,7 @@ export async function editTask(taskId: number, task: ITask) {
 export async function deleteTask(id?: number) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("tasks").delete().eq("id", id);
+  const { error } = await supabase.from("tasks").update({is_deleted: true}).eq("id", id);
 
   if (error) {
     throw new Error(error.message);
@@ -68,7 +71,7 @@ export async function deleteCompletedTasks() {
   const { error } = await supabase
     .from("tasks")
     .delete()
-    .eq("is_complete", true);
+    .eq("is_completed", true);
 
   if (error) {
     throw new Error(error.message);
@@ -101,7 +104,7 @@ export async function onCheckChange(task: ITask) {
 
   const { error } = await supabase
     .from("tasks")
-    .update({ is_complete: !task?.is_complete })
+    .update({ is_completed: !task?.is_completed })
     .eq("id", task?.id)
     .select();
 
