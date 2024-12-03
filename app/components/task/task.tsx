@@ -32,9 +32,9 @@ export default function Task({ task }: { task: ITask }) {
         </form>
         <div>
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <FiMoreVertical className="text-gray-600" />
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="secondary" size="icon" className="rounded-full">
+                <FiMoreVertical />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -49,7 +49,6 @@ export default function Task({ task }: { task: ITask }) {
           </DropdownMenu>
         </div>
       </div>
-      <Separator className="border-b border-gray-50" />
     </div>
   );
 }

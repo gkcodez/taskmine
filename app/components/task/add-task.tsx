@@ -8,6 +8,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { FiPlus } from "react-icons/fi";
 import React from "react";
 import { ITask } from "@/app/models/task";
+import { Label } from "recharts";
 
 export default function AddTask() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -29,7 +30,9 @@ export default function AddTask() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" size="icon" className="rounded-full"><FiPlus /></Button>
+            <Button type="button" variant="default" size="icon" className="rounded-full">
+              <FiPlus/>
+            </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -20,7 +20,7 @@ export default function UpdateTask({
   const [taskId, setTaskId] = useState<number | undefined>();
 
   const updateTask = async (formData: FormData) => {
-    if (!taskId) return; // Ensure the task ID is set before updating
+    if (!taskId) return;
     const updatedTask = {
       task: formData.get("task") as string,
       is_complete: false,

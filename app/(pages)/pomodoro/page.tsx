@@ -102,15 +102,14 @@ export default function Pomodoro() {
 
 
     return (
-        <div className="flex flex-col items-start justify-start w-full">
-            <div className="flex flex-col items-start justify-start gap-2 w-full">
-                <Tabs defaultValue="focus" className="w-full">
+        <div className="flex flex-col items-start justify-start w-full min-h-[calc(100vh-80px)] gap-2">
+                <Tabs defaultValue="focus" className="w-full ">
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger disabled={isRunning} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
                         <TabsTrigger disabled={isRunning} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
                         <TabsTrigger disabled={isRunning} value="longbreak" onClick={() => selectTab("longbreak")}>Long Break</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="focus">
+                    <TabsContent value="focus"  className="h-full">
                         <Card>
                             <CardHeader>
                                 <CardTitle className="flex items-center justify-start gap-2"><FiClock /> Focus</CardTitle>
@@ -138,7 +137,8 @@ export default function Pomodoro() {
                                     }
 
                                     <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset</Button>
+                                        <FiRefreshCw /> Reset
+                                    </Button>
                                 </div>
                             </CardFooter>
                         </Card>
@@ -171,7 +171,8 @@ export default function Pomodoro() {
                                     }
 
                                     <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset</Button>
+                                        <FiRefreshCw /> Reset
+                                    </Button>
                                 </div>
                             </CardFooter>
                         </Card>
@@ -203,13 +204,14 @@ export default function Pomodoro() {
                                     }
 
                                     <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset</Button>
+                                        <FiRefreshCw /> Reset
+                                    </Button>
                                 </div>
                             </CardFooter>
                         </Card>
                     </TabsContent>
                 </Tabs>
-                <div className="w-full">
+                <div className="w-full flex-grow">
                     <FocusChart />
                 </div>
 
@@ -227,7 +229,6 @@ export default function Pomodoro() {
                     <CardFooter>
                     </CardFooter>
                 </Card> */}
-            </div>
         </div>
     )
 }
