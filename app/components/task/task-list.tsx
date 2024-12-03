@@ -2,6 +2,7 @@ import Task from "@/app/components/task/task";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
 import { createClient } from "@/app/utils/supabase/server";
 import { Separator } from "../ui/separator";
+import AddTask from "./add-task";
 
 export default async function TaskList() {
   const supabase = await createClient();
@@ -14,15 +15,17 @@ export default async function TaskList() {
 
   return (
     <div>
-      <div className="p-2">
-        <h3 className="text-gray-600 font-semibold py-2">Tasks ( {tasks &&
-          tasks
-            .filter((task) => {
-              return task.is_complete == true;
-            }).length
-        } / {tasks &&
-          tasks.length} )</h3>
-          <Separator  className="border-b border-gray-100"/>
+        <div className="flex items-center justify-between p-2">
+          <h3 className="text-gray-600 font-semibold py-2">Tasks ( {tasks &&
+            tasks
+              .filter((task) => {
+                return task.is_complete == true;
+              }).length
+          } / {tasks &&
+            tasks.length} )</h3>
+            <AddTask />
+        </div>
+        <Separator className="border-b border-gray-100" />
         <ScrollArea className="h-full">
           <div className="flex flex-col">
             {tasks &&
@@ -33,7 +36,7 @@ export default async function TaskList() {
                 .map((task) => {
                   return <Task key={task.id} task={task} />;
                 })}
-                {tasks &&
+            {tasks &&
               tasks
                 .filter((task) => {
                   return task.is_complete;
@@ -43,7 +46,6 @@ export default async function TaskList() {
                 })}
           </div>
         </ScrollArea>
-      </div>
     </div>
   );
 }

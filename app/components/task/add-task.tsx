@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { addTask } from "@/app/actions/task/task";
-import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { FiPlus } from "react-icons/fi";
 import React from "react";
 import { ITask } from "@/app/models/task";
@@ -26,18 +26,18 @@ export default function AddTask() {
 
   const handleSaveChanges = () => { formRef.current?.requestSubmit(); };
 
-  return (   
-    <Dialog  open={open} onOpenChange={setOpen}>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="default" className="rounded-full w-10 h-10 p-0 "><FiPlus className=""/></Button>
+        <Button variant="default" size="icon" className="rounded-full"><FiPlus /></Button>
       </DialogTrigger>
-
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Add Task</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <form
-          className="flex outline-none items-center gap-2 mb-2"
+          className="flex outline-none items-center gap-2"
           ref={formRef}
           action={addNewTask}
         >
@@ -52,14 +52,13 @@ export default function AddTask() {
 
         <DialogFooter className="flex items-center justify-center gap-2">
           <DialogClose asChild>
-            <Button type="button" variant="secondary"> 
+            <Button type="button" variant="secondary">
               Discard
             </Button>
           </DialogClose>
           <Button type="submit" onClick={handleSaveChanges}>Add Task</Button>
         </DialogFooter>
       </DialogContent>
-
     </Dialog>
   );
 }
