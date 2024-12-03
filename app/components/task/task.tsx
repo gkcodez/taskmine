@@ -48,31 +48,6 @@ export default function Task({ task }: { task: ITask }) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {/* <Button
-          variant="ghost"
-          size="icon"
-          className=""
-          onClick={async () => {
-            await deleteTask(task.id);
-          }}
-        >
-          <div>
-            <FiClock className="text-gray-600" />
-          </div>
-        </Button>
-        <UpdateTask currentTask={task} />
-        <Button
-          variant="ghost"
-          size="icon"
-          className=""
-          onClick={async () => {
-            await deleteTask(task.id);
-          }}
-        >
-          <div>
-            <FiTrash className="text-red-600" />
-          </div>
-        </Button> */}
       </div>
       <Separator className="border-b border-gray-50" />
     </div>
