@@ -9,13 +9,22 @@ import { FiChevronDown, FiChevronsUp, FiChevronUp, FiEdit, FiMeh, FiMinus, FiMor
 import UpdateTask from "./update-task";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
-import AddTask from "./add-task";
 import { Badge } from "../ui/badge";
 
-export default function Task({ task }: { task: ITask }) {
+export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask }: { task: ITask, onDeleteTask: any, onCheckTask: any, onUpdateTask: any }) {
 
   const deleteSelectedTask = async (taskId: number | undefined) => {
-    await deleteTask(taskId);
+    const tasks = await deleteTask(taskId);
+    onDeleteTask(tasks)
+  }
+
+  const checkSelectedTask = async () => {
+    const tasks = await onCheckChange(task);
+    onCheckTask(tasks)
+  }
+
+  const updateSelectedTask = async () => {
+    onUpdateTask()
   }
 
   return (
@@ -28,33 +37,33 @@ export default function Task({ task }: { task: ITask }) {
             className={`mt-0.5 w-5 h-5 ${task.is_completed ? "opacity-30" : "opacity-100"}`}
             id={task?.id as unknown as string}
             checked={task?.is_completed}
-            onCheckedChange={() => onCheckChange(task)}
+            onCheckedChange={checkSelectedTask}
           />
-          <h3 className={`p-2 ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.task}</h3>
+          <h3 className={`p-2 ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.title}</h3>
 
         </form>
         <div className="flex items-center justify-center gap-2">
           {
             task.pomodoro_count &&
-            <Badge className="rounded-full">{task.pomodoro_count}</Badge>
+            <Badge className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.pomodoro_count}</Badge>
           }
         </div>
         <div className="flex items-center justify-center gap-2">
           {
             task.priority == 1 &&
-            <FiChevronsUp className="text-red-600" />
+            <FiChevronsUp className={`text-red-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
           }
           {
             task.priority == 2 &&
-            <FiChevronUp className="text-orange-600" />
+            <FiChevronUp className={`text-orange-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
           }
           {
             task.priority == 3 &&
-            <FiMinus className="text-yellow-600" />
+            <FiMinus className={`text-yellow-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
           }
           {
             task.priority == 4 &&
-            <FiChevronDown className="text-green-600" />
+            <FiChevronDown className={`text-green-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
           }
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -69,7 +78,7 @@ export default function Task({ task }: { task: ITask }) {
 
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild><UpdateTask currentTask={task} /></DropdownMenuItem>
+              <DropdownMenuItem asChild><UpdateTask currentTask={task} onUpdateTask={updateSelectedTask} /></DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

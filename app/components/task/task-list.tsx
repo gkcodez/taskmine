@@ -1,97 +1,119 @@
+"use client"
+
 import Task from "@/app/components/task/task";
 import { ScrollArea } from "@/app/components/ui/scroll-area";
-import { createClient } from "@/app/utils/supabase/server";
 import { Separator } from "../ui/separator";
 import AddTask from "./add-task";
 import { Button } from "../ui/button";
-import { FiDownload, FiMenu, FiSearch, FiSliders, FiTrash } from "react-icons/fi";
+import { FiCheck, FiMenu, FiSliders, FiTrash, FiX } from "react-icons/fi";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import TaskActions from "./task-action";
 import DeleteAllCompletedTask from "./delete-all-completed-task";
 import DeleteAllTask from "./delete-all-task";
+import SearchTask from "./search-task";
+import { useEffect, useState } from "react";
+import { fetchAllTasks, fetchSearchResults } from "@/app/actions/task/task";
 
-export default async function TaskList() {
-  const supabase = await createClient();
+export default function TaskList() {
 
-  const { data: tasks, error } = await supabase.from("tasks").select("*").eq("is_deleted", false);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [filtered, setFiltered] = useState<boolean>(false);
 
-  if (error) {
-    throw new Error(error.message);
+  const searchTasks = async (taskName: string) => {
+    const tasks = await fetchSearchResults(taskName)
+    setTasks(tasks);
+    setFiltered(true);
+  };
+
+  const fetchTasks = async () => {
+    const tasks = await fetchAllTasks();
+    setTasks(tasks)
+    setFiltered(false);
   }
 
+  useEffect(() => {
+    fetchTasks();
+  }, []);
+
+
   return (
-        <Card className="flex flex-col w-full min-h-[calc(100vh-180px)]">
-          <CardHeader className="w-full h-20">
-            <CardTitle className="flex items-center justify-between gap-2 ">Tasks ( {tasks &&
+    <Card className="flex flex-col w-full min-h-[calc(100vh-180px)]">
+      <CardHeader className="w-full h-20">
+        <CardTitle className="flex items-center justify-between gap-2 ">Tasks ( {tasks &&
+          tasks
+            .filter((task) => {
+              return task.is_completed == true;
+            }).length
+        } / {tasks &&
+          tasks.length} )
+          <div className="flex items-center justify-center gap-2">
+            <AddTask onAddTask={fetchTasks} />
+            {
+              !filtered &&
+              <SearchTask onSearchTask={(taskName: string) => searchTasks(taskName)} />
+            }
+            {
+              filtered &&
+              <Button variant="secondary" size="icon" onClick={fetchTasks} className="rounded-full"><FiX /></Button>
+            }
+            <Button variant="secondary" size="icon" className="rounded-full">
+              <FiSliders />
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button type="button" variant="secondary" size="icon" className="rounded-full">
+                  <FiMenu />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem><DeleteAllCompletedTask onDelete={fetchTasks} /></DropdownMenuItem>
+                <DropdownMenuItem><DeleteAllTask onDelete={fetchTasks} /></DropdownMenuItem>
+                <DropdownMenuLabel>Miscellaneous</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Button variant="ghost" className="w-full flex items-start justify-start px-2">
+                    <FiTrash /> Recycle bin
+                  </Button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </CardTitle>
+        <CardDescription>
+        </CardDescription>
+      </CardHeader>
+      <Separator />
+      <CardContent className="flex-grow w-full">
+        <ScrollArea className="w-full  h-[calc(100vh-260px)]">
+          <div className="flex flex-col px-2">
+            {tasks &&
               tasks
                 .filter((task) => {
-                  return task.is_completed == true;
-                }).length
-            } / {tasks &&
-              tasks.length} )
-              <div className="flex items-center justify-center gap-2">
-                <AddTask />
-                <Button variant="secondary" size="icon" className="rounded-full">
-                      <FiSearch /> 
-                    </Button>
-                    <Button variant="secondary" size="icon" className="rounded-full">
-                      <FiSliders />
-                    </Button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button type="button" variant="secondary" size="icon" className="rounded-full">
-                      <FiMenu />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem><DeleteAllCompletedTask/></DropdownMenuItem>
-                    <DropdownMenuItem><DeleteAllTask/></DropdownMenuItem>
-                    <DropdownMenuLabel>Miscellaneous</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>    
-                    <Button variant="ghost" className="w-full flex items-start justify-start px-2">
-                      <FiTrash /> Recycle bin
-                    </Button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </CardTitle>
-            <CardDescription>
-            </CardDescription>
-          </CardHeader>
-          <Separator/>
-          <CardContent className="flex-grow w-full">
-            <ScrollArea className="w-full  h-[calc(100vh-260px)]">
-              <div className="flex flex-col px-2">
-                {tasks &&
-                  tasks
-                    .filter((task) => {
-                      return task.is_completed == false;
-                    })
-                    .map((task) => {
-                      return <Task key={task.id} task={task} />;
-                    })}
-                {tasks &&
-                  tasks
-                    .filter((task) => {
-                      return task.is_completed;
-                    })
-                    .map((task) => {
-                      return <Task key={task.id} task={task} />;
-                    })}
-              </div>
-            </ScrollArea>
-          </CardContent>
-          <CardFooter className="w-full">
-          <div className="flex flex-col w-full">
+                  return task.is_completed == false;
+                })
+                .map((task) => {
+                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} />;
+                })}
+            {tasks &&
+              tasks
+                .filter((task) => {
+                  return task.is_completed;
+                })
+                .map((task) => {
+                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} />;
+                })}
+          </div>
+        </ScrollArea>
+      </CardContent>
+      <CardFooter className="w-full">
+        <div className="flex flex-col w-full">
           <Separator />
           <TaskActions />
-          </div>
-          </CardFooter>
-        </Card>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }

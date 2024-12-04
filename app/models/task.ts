@@ -2,7 +2,7 @@
 export interface ITask {
     id?: number;
     user_id?: string;
-    task: string;
+    title: string;
     priority?: number;
     pomodoro_count?: number;
     is_completed: boolean;

@@ -17,7 +17,7 @@ export async function addTask(task: ITask) {
     .insert([
       {
         user_id: user?.id,
-        task: task.task,
+        title: task.title,
         priority: task.priority ? task.priority : null,
         pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null,
         is_completed: task.is_completed,
@@ -33,6 +33,7 @@ export async function addTask(task: ITask) {
   }
 
   revalidatePath("/");
+
 }
 
 export async function editTask(task: ITask) {
@@ -44,11 +45,11 @@ export async function editTask(task: ITask) {
 
   const { error } = await supabase
     .from("tasks")
-    .update({ 
-      task: task.task, 
-      priority: task.priority ? task.priority : null, 
-      pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null, 
-      updated_on: task.updated_on 
+    .update({
+      title: task.title,
+      priority: task.priority ? task.priority : null,
+      pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null,
+      updated_on: task.updated_on
     })
     .eq("id", task.id)
     .eq("user_id", user?.id)
@@ -62,7 +63,7 @@ export async function editTask(task: ITask) {
 export async function deleteTask(id?: number) {
   const supabase = await createClient();
 
-  const { error } = await supabase.from("tasks").update({is_deleted: true}).eq("id", id);
+  const { error } = await supabase.from("tasks").update({ is_deleted: true }).eq("id", id);
 
   if (error) {
     throw new Error(error.message);
@@ -119,4 +120,45 @@ export async function onCheckChange(task: ITask) {
   }
 
   revalidatePath("/");
+}
+
+
+export async function fetchSearchResults(taskName: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .select()
+    .eq("user_id", user?.id)
+    .eq("is_deleted", false)
+    .textSearch('title', `'${taskName}'`);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  revalidatePath("/");
+  return data;
+}
+
+
+export async function fetchAllTasks() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const { data, error } = await supabase
+    .from("tasks")
+    .select()
+    .eq("user_id", user?.id)
+    .eq("is_deleted", false)
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  revalidatePath("/");
+  return data;
 }
