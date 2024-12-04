@@ -103,7 +103,7 @@ export default function Pomodoro() {
 
     return (
         <div className="flex flex-col items-start justify-start w-full min-h-[calc(100vh-80px)] gap-2">
-                <Tabs defaultValue="focus" className="w-full flex-grow">
+                <Tabs defaultValue="focus" className="w-full">
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger disabled={isRunning} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
                         <TabsTrigger disabled={isRunning} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
@@ -211,7 +211,7 @@ export default function Pomodoro() {
                         </Card>
                     </TabsContent>
                 </Tabs>
-                <div className="w-full flex-grow">
+                <div className="w-full">
                     <FocusChart />
                 </div>
 

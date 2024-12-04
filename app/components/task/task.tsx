@@ -10,6 +10,7 @@ import UpdateTask from "./update-task";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import AddTask from "./add-task";
+import { Badge } from "../ui/badge";
 
 export default function Task({ task }: { task: ITask }) {
 
@@ -30,22 +31,28 @@ export default function Task({ task }: { task: ITask }) {
             onCheckedChange={() => onCheckChange(task)}
           />
           <h3 className={`p-2 ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.task}</h3>
-          
+
         </form>
         <div className="flex items-center justify-center gap-2">
-        {
+          {
+            task.pomodoro_count &&
+            <Badge className="rounded-full">{task.pomodoro_count}</Badge>
+          }
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          {
             task.priority == 1 &&
             <FiChevronsUp className="text-red-600" />
           }
-                    {
+          {
             task.priority == 2 &&
             <FiChevronUp className="text-orange-600" />
           }
-                    {
+          {
             task.priority == 3 &&
             <FiMinus className="text-yellow-600" />
           }
-                    {
+          {
             task.priority == 4 &&
             <FiChevronDown className="text-green-600" />
           }
@@ -56,13 +63,13 @@ export default function Task({ task }: { task: ITask }) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-            <DropdownMenuLabel>Pomodoro</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem  onClick={() => console.log("Focus started!")}><FiTarget /> Focus</DropdownMenuItem>
+              <DropdownMenuLabel>Pomodoro</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => console.log("Focus started!")}><FiTarget /> Focus</DropdownMenuItem>
 
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild><UpdateTask currentTask={task}/></DropdownMenuItem>
+              <DropdownMenuItem asChild><UpdateTask currentTask={task} /></DropdownMenuItem>
               <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

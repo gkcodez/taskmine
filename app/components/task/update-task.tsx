@@ -25,6 +25,7 @@ export default function UpdateTask({
       id: currentTask.id,
       task: formData.get("task") as string,
       priority: formData.get("priority") as number,
+      pomodoro_count: formData.get("pomodoro_count") as number,
       is_completed: false,
       is_deleted: false,
       created_on: new Date(),
@@ -45,8 +46,10 @@ export default function UpdateTask({
     setTimeout(() => {
       const taskNameInput = formRef.current?.elements.namedItem("task") as HTMLInputElement;
       const taskPriorityInput = formRef.current?.elements.namedItem("priority") as HTMLInputElement;
+      const taskPomodoroInput = formRef.current?.elements.namedItem("pomodoro_count") as HTMLInputElement;
       if (taskNameInput) taskNameInput.value = task.task;
       if (taskPriorityInput) taskPriorityInput.value = task.priority ? task.priority.toString() : "";
+      if (taskPomodoroInput) taskPomodoroInput.value = task.pomodoro_count ? task.pomodoro_count.toString() : "";
     }, 0);
   };
 
@@ -72,20 +75,29 @@ export default function UpdateTask({
             ref={formRef}
             action={updateTask}
           >
-            <Input
-              id="task"
-              className="p-2 focus-visible:ring-transparent"
-              name="task"
-              placeholder="Update task"
-              required
-            />
-            <Input
+             <Input
+            id="task"
+            className="p-2 focus-visible:ring-transparent"
+            name="task"
+            placeholder="Task name"
+            required
+          />
+          <div className="flex items-center justify-start gap-2 w-full">
+          <Input
             id="priority"
             className="p-2 focus-visible:ring-transparent"
             name="priority"
             type="number"
-            placeholder="Enter the task priority. Eg: 1"
+            placeholder="Task priority. Eg: 1"
           />
+          <Input
+            id="pomodoro_count"
+            className="p-2 focus-visible:ring-transparent"
+            name="pomodoro_count"
+            type="number"
+            placeholder="Estimated pomodoros. Eg: 1"
+          />
+          </div>
           </form>
           <DialogFooter className="flex items-center justify-center gap-2">
             <DialogClose asChild>

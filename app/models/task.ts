@@ -4,6 +4,7 @@ export interface ITask {
     user_id?: string;
     task: string;
     priority?: number;
+    pomodoro_count?: number;
     is_completed: boolean;
     is_deleted: boolean;
     created_on: Date;

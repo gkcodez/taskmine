@@ -19,6 +19,7 @@ export async function addTask(task: ITask) {
         user_id: user?.id,
         task: task.task,
         priority: task.priority ? task.priority : null,
+        pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null,
         is_completed: task.is_completed,
         is_deleted: task.is_deleted,
         created_on: task.created_on,
@@ -43,7 +44,12 @@ export async function editTask(task: ITask) {
 
   const { error } = await supabase
     .from("tasks")
-    .update({ task: task.task, priority: task.priority ? task.priority : null, updated_on: task.updated_on })
+    .update({ 
+      task: task.task, 
+      priority: task.priority ? task.priority : null, 
+      pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null, 
+      updated_on: task.updated_on 
+    })
     .eq("id", task.id)
     .eq("user_id", user?.id)
     .select();

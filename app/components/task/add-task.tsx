@@ -8,7 +8,7 @@ import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, Di
 import { FiPlus } from "react-icons/fi";
 import React from "react";
 import { ITask } from "@/app/models/task";
-import { Label } from "recharts";
+import { Label } from "@/app/components/ui/label";
 
 export default function AddTask() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -20,6 +20,7 @@ export default function AddTask() {
       priority: formData.get("priority") as number,
       is_completed: false,
       is_deleted: false,
+      pomodoro_count: formData.get("pomodoro_count") as number,
       created_on: new Date(),
       updated_on: new Date()
     }
@@ -34,17 +35,17 @@ export default function AddTask() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-            <Button type="button" variant="secondary" size="icon" className="rounded-full">
-              <FiPlus/>
-            </Button>
+        <Button type="button" variant="secondary" size="icon" className="rounded-full">
+          <FiPlus />
+        </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Add Task</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <form
-          className="flex flex-col outline-none items-center gap-2"
+          className="flex flex-col outline-none items-start gap-2"
           ref={formRef}
           action={addNewTask}
         >
@@ -52,16 +53,25 @@ export default function AddTask() {
             id="task"
             className="p-2 focus-visible:ring-transparent"
             name="task"
-            placeholder="Read books"
+            placeholder="Task name"
             required
           />
-            <Input
+          <div className="flex items-center justify-start gap-2 w-full">
+          <Input
             id="priority"
             className="p-2 focus-visible:ring-transparent"
             name="priority"
             type="number"
-            placeholder="Enter the task priority. Eg: 1"
+            placeholder="Task priority. Eg: 1"
           />
+          <Input
+            id="pomodoro_count"
+            className="p-2 focus-visible:ring-transparent"
+            name="pomodoro_count"
+            type="number"
+            placeholder="Estimated pomodoros. Eg: 1"
+          />
+          </div>
         </form>
 
         <DialogFooter className="flex items-center justify-center gap-2">
