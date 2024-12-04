@@ -3,7 +3,7 @@
 "use client";
 
 import { Button } from "@/app/components/ui/button";
-import { FiCheckSquare, FiSettings } from "react-icons/fi";
+import { FiCheckSquare, FiMoon, FiSettings, FiSun } from "react-icons/fi";
 import SignOutButton from "../auth/signout-button";
 
 export default function Navbar() {
@@ -16,6 +16,7 @@ export default function Navbar() {
                 </div>
             </div>
             <div className="flex items-center justify-center gap-2">
+                <Button variant="outline"><FiSun /></Button>
                 <Button variant="outline"><FiSettings /></Button>
                 <SignOutButton />
             </div>
