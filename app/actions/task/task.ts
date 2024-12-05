@@ -144,7 +144,7 @@ export async function fetchSearchResults(taskName: string) {
 }
 
 
-export async function fetchAllTasks() {
+export async function fetchAllTasks(orderby: string = "title", ascending: boolean = true) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -155,6 +155,7 @@ export async function fetchAllTasks() {
     .select()
     .eq("user_id", user?.id)
     .eq("is_deleted", false)
+    .order(orderby, { ascending: ascending })
 
   if (error) {
     throw new Error(error.message);

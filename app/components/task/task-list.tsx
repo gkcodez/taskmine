@@ -14,6 +14,7 @@ import DeleteAllTask from "./delete-all-task";
 import SearchTask from "./search-task";
 import { useEffect, useState } from "react";
 import { fetchAllTasks, fetchSearchResults } from "@/app/actions/task/task";
+import SortAndFilterTask from "./sort-and-filter-task";
 
 export default function TaskList() {
 
@@ -25,6 +26,12 @@ export default function TaskList() {
     setTasks(tasks);
     setFiltered(true);
   };
+
+  const sortAndFilterTasks = async (orderby: string = "title", ascending: boolean = true) => {
+    const tasks = await fetchAllTasks(orderby = orderby, ascending = ascending);
+    setTasks(tasks)
+    setFiltered(false);
+  }
 
   const fetchTasks = async () => {
     const tasks = await fetchAllTasks();
@@ -57,9 +64,7 @@ export default function TaskList() {
               filtered &&
               <Button variant="secondary" size="icon" onClick={fetchTasks} className="rounded-full"><FiX /></Button>
             }
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <FiSliders />
-            </Button>
+            <SortAndFilterTask onSortTask={(sortBy: string, sortAscending: false) => sortAndFilterTasks(sortBy, sortAscending)} />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button type="button" variant="secondary" size="icon" className="rounded-full">
