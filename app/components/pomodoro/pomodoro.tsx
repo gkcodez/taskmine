@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react"
 import { Button } from "@/app/components/ui/button"
-import { FiBell, FiClock, FiPause, FiPlay, FiRefreshCw } from "react-icons/fi"
+import { FiBell, FiClock, FiPause, FiPlay, FiRefreshCw, FiSkipForward } from "react-icons/fi"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/app/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/app/components/ui/card"
 import { FocusChart } from "@/app/components/pomodoro/focus-chart"
@@ -16,7 +16,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             LongBreak: "LongBreak",
         },
         Duration: {
-            Focus: 1200,
+            Focus: 3,
             ShortBreak: 300,
             LongBreak: 900,
         }
@@ -51,18 +51,14 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             }, 1000)
         } else if (timeRemaining === 0) {
             setIsRunning(false)
-            if (selectedTab == "focus") {
-                selectTab("shortbreak")
-            }
-            else if (selectedTab == "shortbreak") {
-                selectTab("longbreak")
-            } else {
-                selectTab("focus")
-            }
-
             timerRunningAudio?.pause()
             timerFinishedAudio?.play()
             onTaskFocusComplete(task);
+            if (selectedTab == "focus") {
+                selectTab("shortbreak")
+            } else {
+                selectTab("focus")
+            }
         }
         return () => clearInterval(interval)
     }, [isRunning, onTaskFocusComplete, selectTab, selectedTab, task, timeRemaining, timer.Duration.Focus, timer.Duration.ShortBreak, timerFinishedAudio, timerRunningAudio])
@@ -83,6 +79,9 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
         timerFinishedAudio?.pause()
     }
     const handleReset = () => {
+        setIsRunning(false)
+        timerRunningAudio?.pause()
+        timerFinishedAudio?.pause()
         if (selectedTab == "focus") {
             setTimeRemaining(timer.Duration.Focus)
         } else if (selectedTab == "shortbreak") {
@@ -90,9 +89,16 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
         } else if (selectedTab == "longbreak") {
             setTimeRemaining(timer.Duration.LongBreak)
         }
+    }
+
+    const handleSkip = () => {
         setIsRunning(false)
         timerRunningAudio?.pause()
-        timerFinishedAudio?.pause()
+        if (selectedTab == "focus") {
+            selectTab("shortbreak")
+        } else {
+            selectTab("focus")
+        }
     }
 
     const timerRunningAudioRef = useRef<HTMLAudioElement | undefined>(
@@ -160,6 +166,10 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
                                 <Button onClick={handleReset}>
                                     <FiRefreshCw /> Reset
                                 </Button>
+
+                                <Button onClick={handleSkip}>
+                                    <FiSkipForward /> Skip
+                                </Button>
                             </div>
                         </CardFooter>
                     </Card>
@@ -194,6 +204,9 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
                                 <Button onClick={handleReset}>
                                     <FiRefreshCw /> Reset
                                 </Button>
+                                <Button onClick={handleSkip}>
+                                    <FiSkipForward /> Skip
+                                </Button>
                             </div>
                         </CardFooter>
                     </Card>
@@ -226,6 +239,9 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
 
                                 <Button onClick={handleReset}>
                                     <FiRefreshCw /> Reset
+                                </Button>
+                                <Button onClick={handleSkip}>
+                                    <FiSkipForward /> Skip
                                 </Button>
                             </div>
                         </CardFooter>

@@ -1,6 +1,6 @@
 "use client"
 
-import { incrementActualPomodoroCount } from "@/app/actions/task/task";
+import { addPomodoro, incrementTaskActualPomodoroCount } from "@/app/actions/task/task";
 import Navbar from "@/app/components/navbar/navbar";
 import Pomodoro from "@/app/components/pomodoro/pomodoro";
 import TaskList from "@/app/components/task/task-list";
@@ -20,9 +20,14 @@ export default function Home() {
 
     const completeTaskFocus = async (task: ITask) => {
         setIsFocusComplete(false)
-        if (task) {
-            await incrementActualPomodoroCount(task)
+        const pomodoro = {
+            estimated_pomodoro_count: task?.estimated_pomodoro_count,
+            actual_pomodoro_count: task?.actual_pomodoro_count,
+            created_on: new Date(),
+            updated_on: new Date(),
+            task_id: task?.id
         }
+        await addPomodoro(pomodoro)
         setIsFocusComplete(true)
     }
 
