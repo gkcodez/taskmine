@@ -21,10 +21,6 @@ export default function Home() {
     const completeTaskFocus = async (task: ITask) => {
         setIsFocusComplete(false)
         const pomodoro = {
-            estimated_pomodoro_count: task?.estimated_pomodoro_count,
-            actual_pomodoro_count: task?.actual_pomodoro_count,
-            created_on: new Date(),
-            updated_on: new Date(),
             task_id: task?.id
         }
         await addPomodoro(pomodoro)

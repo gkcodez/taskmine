@@ -34,12 +34,12 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function FocusChart() {
+export function PomodoroChart() {
   return (
     <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Focus Hours</CardTitle>
-        <CardDescription>01/12/2024 - 07/12/2024</CardDescription>
+      <CardHeader className="flex items-start justify-center w-full">
+        <CardTitle>Pomodoro Chart</CardTitle>
+        <CardDescription>Last 7 days</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -65,7 +65,7 @@ export function FocusChart() {
           Increased by 5.2% today <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing focus hours for the last 7 days
+          Showing pomodoros for the last 7 days
         </div>
       </CardFooter>
     </Card>

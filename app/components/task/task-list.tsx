@@ -52,7 +52,7 @@ export default function TaskList({ onTaskFocusStart, isTaskFocusComplete }: { on
 
   return (
     <Card className="flex flex-col w-full min-h-[calc(100vh-180px)]">
-      <CardHeader className="w-full h-20">
+      <CardHeader className="w-full">
         <CardTitle className="flex items-center justify-between gap-2 ">Tasks ( {tasks &&
           tasks
             .filter((task) => {

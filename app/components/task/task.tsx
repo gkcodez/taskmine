@@ -86,7 +86,7 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button type="button" variant="ghost" size="icon" onClick={focusTask}><FiClock />
+            <Button type="button" variant="ghost" size="icon" onClick={focusTask} className={`${task.is_completed ? "opacity-30" : "opacity-100"}`}><FiPlay />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -127,7 +127,7 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
           <Tooltip>
             <TooltipTrigger asChild>
               <DropdownMenuTrigger asChild>
-                <Button type="button" variant="ghost" size="icon" className="rounded-full">
+                <Button type="button" variant="ghost" size="icon" className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>
                   <FiMoreVertical />
                 </Button>
               </DropdownMenuTrigger>
@@ -144,6 +144,6 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
           <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </div >
   );
 }
