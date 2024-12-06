@@ -101,9 +101,9 @@ export default function AddTask({
               </SelectContent>
             </Select>
             <Input
-              id="pomodoro_count"
+              id="estimated_pomodoro_count"
               className="p-2 focus-visible:ring-transparent"
-              name="pomodoro_count"
+              name="estimated_pomodoro_count"
               type="number"
               placeholder="Estimated pomodoros. Eg: 1"
             />
