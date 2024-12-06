@@ -69,10 +69,19 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
 
       </form>
       <div className="flex items-center justify-center gap-2">
-        {
-          task.estimated_pomodoro_count &&
-          <Badge variant="outline" className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.actual_pomodoro_count ?? 0} / {task.estimated_pomodoro_count}</Badge>
-        }
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {
+                task.estimated_pomodoro_count &&
+                <Badge variant="outline" className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.actual_pomodoro_count ?? 0} / {task.estimated_pomodoro_count}</Badge>
+              }
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Actual pomodoros / Estimated pomodoros</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       <TooltipProvider>
         <Tooltip>
