@@ -1,6 +1,6 @@
 "use client"
 
-import { addPomodoro, incrementTaskActualPomodoroCount } from "@/app/actions/task/task";
+import { addPomodoro } from "@/app/actions/pomodoro/pomodoro";
 import Navbar from "@/app/components/navbar/navbar";
 import Pomodoro from "@/app/components/pomodoro/pomodoro";
 import TaskList from "@/app/components/task/task-list";

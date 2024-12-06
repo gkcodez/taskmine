@@ -17,15 +17,11 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/app/components/ui/chart"
-const chartData = [
-  { month: "01", focus: 186 },
-  { month: "02", focus: 305 },
-  { month: "03", focus: 237 },
-  { month: "04", focus: 73 },
-  { month: "05", focus: 209 },
-  { month: "06", focus: 209 },
-  { month: "07", focus: 209 },
-]
+import { fetchPomodorosForLast7Days } from "@/app/actions/pomodoro/pomodoro"
+import { useEffect, useState } from "react"
+
+
+let chartData = [{}]
 
 const chartConfig = {
   focus: {
@@ -35,6 +31,21 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function PomodoroChart() {
+
+
+  const fetchPomodoroHistory = async () => {
+    const pomodoroHistory = await fetchPomodorosForLast7Days();
+    if (pomodoroHistory) {
+      chartData = pomodoroHistory;
+    }
+  }
+
+
+  useEffect(() => {
+    fetchPomodoroHistory();
+  }, []);
+
+
   return (
     <Card className="w-full">
       <CardHeader className="flex items-start justify-center w-full">
@@ -42,23 +53,27 @@ export function PomodoroChart() {
         <CardDescription>Last 7 days</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <Bar dataKey="focus" fill="var(--color-focus)" radius={5} />
-          </BarChart>
-        </ChartContainer>
+        {
+          chartData &&
+          <ChartContainer config={chartConfig}>
+            <BarChart accessibilityLayer data={chartData}>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) => value.slice(0, 3)}
+              />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
+              />
+              <Bar dataKey="focus" fill="var(--color-focus)" radius={5} />
+            </BarChart>
+          </ChartContainer>
+        }
+
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
