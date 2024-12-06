@@ -3,15 +3,17 @@
 "use client";
 
 import { Button } from "@/app/components/ui/button";
-import { FiCheckSquare, FiMoon, FiSettings, FiSun } from "react-icons/fi";
+import { FiCheckSquare, FiMenu, FiMoon, FiSettings, FiSun } from "react-icons/fi";
 import SignOutButton from "../auth/signout-button";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 export default function Navbar() {
 
     const { setTheme } = useTheme()
-    const [darkMode, setDarkMode] = useState<boolean>()
+    const [darkMode, setDarkMode] = useState<boolean>(false)
 
     useEffect(() => {
         const theme = localStorage.getItem("theme")
@@ -41,18 +43,45 @@ export default function Navbar() {
                 </div >
             </div >
             <div className="flex items-center justify-center gap-2">
-                {
-                    !darkMode &&
-                    <Button variant="outline" onClick={toggleTheme} ><FiMoon /></Button>
-                }
-                {
-                    darkMode &&
-                    <Button variant="outline" onClick={toggleTheme} ><FiSun /></Button>
-                }
-
-                <Button variant="outline"><FiSettings /></Button>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            {
+                                !darkMode &&
+                                <Button variant="outline" onClick={toggleTheme} ><FiMoon /></Button>
+                            }
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Dark Mode</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            {
+                                darkMode &&
+                                <Button variant="outline" onClick={toggleTheme} ><FiSun /></Button>
+                            }
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Light Mode</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="outline"><FiSettings /></Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Settings</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <SignOutButton />
-            </div>
+
+            </div >
         </div >
     );
 }

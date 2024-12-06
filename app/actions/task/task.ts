@@ -19,7 +19,7 @@ export async function addTask(task: ITask) {
         user_id: user?.id,
         title: task.title,
         priority: task.priority ? task.priority : null,
-        pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null,
+        estimated_pomodoro_count: task.estimated_pomodoro_count ? task.estimated_pomodoro_count : null,
         is_completed: task.is_completed,
         is_deleted: task.is_deleted,
         created_on: task.created_on,
@@ -48,7 +48,7 @@ export async function editTask(task: ITask) {
     .update({
       title: task.title,
       priority: task.priority ? task.priority : null,
-      pomodoro_count: task.pomodoro_count ? task.pomodoro_count : null,
+      estimated_pomodoro_count: task.estimated_pomodoro_count ? task.estimated_pomodoro_count : null,
       updated_on: task.updated_on
     })
     .eq("id", task.id)
@@ -162,4 +162,20 @@ export async function fetchAllTasks(orderby: string = "title", ascending: boolea
   }
   revalidatePath("/");
   return data;
+}
+
+export async function incrementActualPomodoroCount(task: ITask) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("tasks")
+    .update({ actual_pomodoro_count: task?.actual_pomodoro_count ? task?.actual_pomodoro_count + 1 : 1 })
+    .eq("id", task?.id)
+    .select();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/");
 }

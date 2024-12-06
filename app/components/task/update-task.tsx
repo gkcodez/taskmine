@@ -60,11 +60,12 @@ export default function UpdateTask({
       id: currentTask.id,
       title: formData.get("title") as string,
       priority: priorityNumber,
-      pomodoro_count: formData.get("pomodoro_count") as number,
+      estimated_pomodoro_count: formData.get("estimated_pomodoro_count") as number,
       is_completed: false,
       is_deleted: false,
       created_on: new Date(),
       updated_on: new Date(),
+      due_on: new Date(),
     };
 
     await editTask(updatedTask);
@@ -90,10 +91,10 @@ export default function UpdateTask({
     setTimeout(() => {
       const taskTitleInput = formRef.current?.elements.namedItem("title") as HTMLInputElement;
       const taskPrioritySelect = formRef.current?.elements.namedItem("priority") as HTMLSelectElement;
-      const taskPomodoroInput = formRef.current?.elements.namedItem("pomodoro_count") as HTMLInputElement;
+      const taskEstimatedPomodoroInput = formRef.current?.elements.namedItem("estimated_pomodoro_count") as HTMLInputElement;
       if (taskTitleInput) taskTitleInput.value = task.title;
       if (taskPrioritySelect) taskPrioritySelect.value = priority ? priority : "";
-      if (taskPomodoroInput) taskPomodoroInput.value = task.pomodoro_count ? task.pomodoro_count.toString() : "";
+      if (taskEstimatedPomodoroInput) taskEstimatedPomodoroInput.value = task.estimated_pomodoro_count ? task.estimated_pomodoro_count.toString() : "";
     }, 0);
   };
 
@@ -139,9 +140,9 @@ export default function UpdateTask({
                 </SelectContent>
               </Select>
               <Input
-                id="pomodoro_count"
+                id="estimated_pomodoro_count"
                 className="p-2 focus-visible:ring-transparent"
-                name="pomodoro_count"
+                name="estimated_pomodoro_count"
                 type="number"
                 placeholder="Estimated pomodoros. Eg: 1"
               />

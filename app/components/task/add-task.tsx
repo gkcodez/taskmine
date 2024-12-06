@@ -9,6 +9,7 @@ import { FiChevronDown, FiChevronsDown, FiChevronsUp, FiChevronUp, FiMinus, FiPl
 import React from "react";
 import { ITask } from "@/app/models/task";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export default function AddTask({
   onAddTask,
@@ -40,9 +41,10 @@ export default function AddTask({
       priority: priorityNumber,
       is_completed: false,
       is_deleted: false,
-      pomodoro_count: formData.get("pomodoro_count") as number,
+      estimated_pomodoro_count: formData.get("estimated_pomodoro_count") as number,
       created_on: new Date(),
-      updated_on: new Date()
+      updated_on: new Date(),
+      due_on: new Date()
     }
     await addTask(task);
     onAddTask()
@@ -53,12 +55,22 @@ export default function AddTask({
   const handleSaveChanges = () => { formRef.current?.requestSubmit(); };
 
   return (
+
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button type="button" variant="secondary" size="icon" className="rounded-full">
-          <FiPlus />
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button type="button" variant="secondary" size="icon" className="rounded-full">
+                <FiPlus />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Add task</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Add Task</DialogTitle>
@@ -107,6 +119,7 @@ export default function AddTask({
           <Button type="submit" onClick={handleSaveChanges}>Add Task</Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
+
   );
 }

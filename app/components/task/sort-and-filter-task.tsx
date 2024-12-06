@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import { FiSliders } from "react-icons/fi";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export default function SortAndFilterTask({
     onSortTask,
@@ -34,11 +35,20 @@ export default function SortAndFilterTask({
 
     return (
         <Popover>
-            <PopoverTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                    <FiSliders />
-                </Button>
-            </PopoverTrigger>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <PopoverTrigger asChild>
+                            <Button variant="secondary" size="icon" className="rounded-full">
+                                <FiSliders />
+                            </Button>
+                        </PopoverTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Sort and filter task</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <PopoverContent>
                 <form
                     className="flex flex-col outline-none items-start gap-2"

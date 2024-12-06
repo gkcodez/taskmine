@@ -15,8 +15,10 @@ import SearchTask from "./search-task";
 import { useEffect, useState } from "react";
 import { fetchAllTasks, fetchSearchResults } from "@/app/actions/task/task";
 import SortAndFilterTask from "./sort-and-filter-task";
+import { ITask } from "@/app/models/task";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
-export default function TaskList() {
+export default function TaskList({ onTaskFocusStart, isTaskFocusComplete }: { onTaskFocusStart: any, isTaskFocusComplete: any }) {
 
   const [tasks, setTasks] = useState<any[]>([]);
   const [filtered, setFiltered] = useState<boolean>(false);
@@ -39,9 +41,14 @@ export default function TaskList() {
     setFiltered(false);
   }
 
+  const focusTask = (task: ITask) => {
+    onTaskFocusStart(task)
+  }
+
   useEffect(() => {
     fetchTasks();
-  }, []);
+    console.log("Focus final complete!")
+  }, [isTaskFocusComplete]);
 
 
   return (
@@ -65,12 +72,22 @@ export default function TaskList() {
               <Button variant="secondary" size="icon" onClick={fetchTasks} className="rounded-full"><FiX /></Button>
             }
             <SortAndFilterTask onSortTask={(sortBy: string, sortAscending: false) => sortAndFilterTasks(sortBy, sortAscending)} />
+
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button type="button" variant="secondary" size="icon" className="rounded-full">
-                  <FiMenu />
-                </Button>
-              </DropdownMenuTrigger>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button type="button" variant="secondary" size="icon" className="rounded-full">
+                        <FiMenu />
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>More</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               <DropdownMenuContent>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
@@ -85,6 +102,8 @@ export default function TaskList() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+
           </div>
         </CardTitle>
         <CardDescription>
@@ -100,7 +119,7 @@ export default function TaskList() {
                   return task.is_completed == false;
                 })
                 .map((task) => {
-                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} />;
+                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} onTaskFocus={(task: ITask) => focusTask(task)} />;
                 })}
             {tasks &&
               tasks
@@ -108,7 +127,7 @@ export default function TaskList() {
                   return task.is_completed;
                 })
                 .map((task) => {
-                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} />;
+                  return <Task key={task.id} task={task} onDeleteTask={fetchTasks} onCheckTask={fetchTasks} onUpdateTask={fetchTasks} onTaskFocus={(task: ITask) => focusTask(task)} />;
                 })}
           </div>
         </ScrollArea>

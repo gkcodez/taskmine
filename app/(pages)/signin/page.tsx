@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/app/utils/supabase/server";
-import { signin } from "@/app/actions/auth/auth";
+import { signin, signinWithGoogle } from "@/app/actions/auth/auth";
 
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
@@ -14,10 +14,11 @@ import {
   CardFooter,
   Card,
 } from "@/app/components/ui/card";
+import SignInWithGoogleButton from "@/app/components/auth/signin-with-google";
 
 export default async function SignInPage() {
   const supabase = await createClient();
-  const { data } =  await supabase.auth.getUser();
+  const { data } = await supabase.auth.getUser();
 
   if (data?.user) {
     redirect("/");
@@ -54,9 +55,7 @@ export default async function SignInPage() {
           </form>
           <Separator />
           <div className="space-y-4">
-            <Button className="w-full" variant="outline">
-              Sign in with Google
-            </Button>
+            <SignInWithGoogleButton />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2">

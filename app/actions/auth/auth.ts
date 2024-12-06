@@ -40,6 +40,29 @@ export async function signin(formData: FormData) {
   redirect("/");
 }
 
+export async function signinWithGoogle() {
+  const supabase = await createClient();
+
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+  })
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath("/", "layout");
+  redirect("/");
+}
+
+async function signInWithGithub() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+  })
+}
+
 export async function signout() {
   const supabase = await createClient();
 

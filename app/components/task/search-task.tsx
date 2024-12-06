@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Input } from "../ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
 export default function SearchTask({
     onSearchTask,
@@ -21,11 +22,20 @@ export default function SearchTask({
 
     return (
         <Popover>
-            <PopoverTrigger asChild>
-                <Button variant="secondary" size="icon" className="rounded-full">
-                    <FiSearch />
-                </Button>
-            </PopoverTrigger>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <PopoverTrigger asChild>
+                            <Button variant="secondary" size="icon" className="rounded-full">
+                                <FiSearch />
+                            </Button>
+                        </PopoverTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Search task</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <PopoverContent>
                 <form
                     className="flex flex-col outline-none items-start gap-2"

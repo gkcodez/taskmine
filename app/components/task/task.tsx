@@ -5,13 +5,14 @@ import { deleteTask, onCheckChange } from "@/app/actions/task/task";
 import type { ITask } from "@/app/models/task";
 import { Separator } from "../ui/separator";
 import { Checkbox } from "../ui/checkbox";
-import { FiChevronDown, FiChevronsUp, FiChevronUp, FiEdit, FiMeh, FiMinus, FiMoreVertical, FiTarget, FiTrash } from "react-icons/fi";
+import { FiChevronDown, FiChevronsUp, FiChevronUp, FiClock, FiEdit, FiMeh, FiMinus, FiMoreVertical, FiPlay, FiSend, FiTarget, FiTrash } from "react-icons/fi";
 import UpdateTask from "./update-task";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 
-export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask }: { task: ITask, onDeleteTask: any, onCheckTask: any, onUpdateTask: any }) {
+export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, onTaskFocus }: { task: ITask, onDeleteTask: any, onCheckTask: any, onUpdateTask: any, onTaskFocus: any }) {
 
   const deleteSelectedTask = async (taskId: number | undefined) => {
     const tasks = await deleteTask(taskId);
@@ -25,6 +26,10 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask }: 
 
   const updateSelectedTask = async () => {
     onUpdateTask()
+  }
+
+  const focusTask = () => {
+    onTaskFocus(task)
   }
 
   return (
@@ -41,48 +46,73 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask }: 
         <h3 className={`p-2 ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.title}</h3>
 
       </form>
-
       <div className="flex items-center justify-center gap-2">
         {
-          task.priority == 1 &&
-          <FiChevronsUp className={`text-red-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
+          task.estimated_pomodoro_count &&
+          <Badge variant="outline" className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.actual_pomodoro_count ?? 0} / {task.estimated_pomodoro_count}</Badge>
         }
-        {
-          task.priority == 2 &&
-          <FiChevronUp className={`text-orange-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
-        }
-        {
-          task.priority == 3 &&
-          <FiMinus className={`text-yellow-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
-        }
-        {
-          task.priority == 4 &&
-          <FiChevronDown className={`text-green-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
-        }
-        <div className="flex items-center justify-center gap-2">
-          {
-            task.pomodoro_count &&
-            <Badge variant="outline" className={`rounded-full ${task.is_completed ? "opacity-30" : "opacity-100"}`}>{task.pomodoro_count}</Badge>
-          }
-        </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" size="icon" className="rounded-full">
-              <FiMoreVertical />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Pomodoro</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => console.log("Focus started!")}><FiTarget /> Focus</DropdownMenuItem>
-
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild><UpdateTask currentTask={task} onUpdateTask={updateSelectedTask} /></DropdownMenuItem>
-            <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button type="button" variant="ghost" size="icon" onClick={focusTask}><FiClock />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Focus on task</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="flex items-center justify-center gap-2">
+              {
+                task.priority == 1 &&
+                <FiChevronsUp className={`text-red-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
+              }
+              {
+                task.priority == 2 &&
+                <FiChevronUp className={`text-orange-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
+              }
+              {
+                task.priority == 3 &&
+                <FiMinus className={`text-yellow-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
+              }
+              {
+                task.priority == 4 &&
+                <FiChevronDown className={`text-green-600 ${task.is_completed ? "opacity-30" : "opacity-100"}`} />
+              }
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Priority</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <DropdownMenu>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <DropdownMenuTrigger asChild>
+                <Button type="button" variant="ghost" size="icon" className="rounded-full">
+                  <FiMoreVertical />
+                </Button>
+              </DropdownMenuTrigger>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Actions</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild><UpdateTask currentTask={task} onUpdateTask={updateSelectedTask} /></DropdownMenuItem>
+          <DropdownMenuItem onClick={() => deleteSelectedTask(task.id)}><FiTrash /> Delete</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
