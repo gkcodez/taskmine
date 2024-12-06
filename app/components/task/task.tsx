@@ -11,8 +11,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import { useMemo, useRef, useState } from "react";
 
 export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, onTaskFocus }: { task: ITask, onDeleteTask: any, onCheckTask: any, onUpdateTask: any, onTaskFocus: any }) {
+
+  const [taskCompletedAudio, setTaskCompletedAudio] = useState<HTMLAudioElement>();
+
 
   const deleteSelectedTask = async (taskId: number | undefined) => {
     const tasks = await deleteTask(taskId);
@@ -20,8 +24,12 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
   }
 
   const checkSelectedTask = async () => {
+    if (!task.is_completed) {
+      taskCompletedAudio?.play()
+    }
     const tasks = await onCheckChange(task);
     onCheckTask(tasks)
+
   }
 
   const updateSelectedTask = async () => {
@@ -31,6 +39,20 @@ export default function Task({ task, onDeleteTask, onCheckTask, onUpdateTask, on
   const focusTask = () => {
     onTaskFocus(task)
   }
+
+  const taskCompletedAudioRef = useRef<HTMLAudioElement | undefined>(
+    typeof Audio !== "undefined"
+      ? new Audio("\\audio\\task-complete.mp3")
+      : undefined
+  );
+
+
+  useMemo(() => {
+    if (taskCompletedAudioRef && taskCompletedAudioRef.current) {
+      taskCompletedAudioRef.current.loop = false;
+      setTaskCompletedAudio(taskCompletedAudioRef.current);
+    }
+  }, [taskCompletedAudioRef]);
 
   return (
     <div className="flex items-center gap-1">

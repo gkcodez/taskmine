@@ -70,7 +70,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
 
     useEffect(() => {
         selectTab("focus")
-    }, [task])
+    }, [selectTab, task])
 
     const handleStart = () => {
         setIsRunning(true)
@@ -101,9 +101,9 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             : undefined
     );
 
-    const timerFinishedAudioRef = useRef<HTMLAudioElement | undefined>(
+    const timerCompletedAudioRef = useRef<HTMLAudioElement | undefined>(
         typeof Audio !== "undefined"
-            ? new Audio("\\audio\\timer-finished.mp3")
+            ? new Audio("\\audio\\timer-complete.mp3")
             : undefined
     );
 
@@ -115,20 +115,20 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
     }, [timerRunningAudioRef]);
 
     useMemo(() => {
-        if (timerFinishedAudioRef && timerFinishedAudioRef.current) {
-            timerFinishedAudioRef.current.loop = false;
-            setTimerFinishedAudio(timerFinishedAudioRef.current);
+        if (timerCompletedAudioRef && timerCompletedAudioRef.current) {
+            timerCompletedAudioRef.current.loop = false;
+            setTimerFinishedAudio(timerCompletedAudioRef.current);
         }
-    }, [timerFinishedAudioRef]);
+    }, [timerCompletedAudioRef]);
 
 
     return (
         <div className="flex flex-col items-start justify-start w-full min-h-[calc(100vh-80px)] gap-2">
             <Tabs defaultValue="focus" value={selectedTab} onValueChange={onTabChange} className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger disabled={isRunning || !task} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
-                    <TabsTrigger disabled={isRunning || !task} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
-                    <TabsTrigger disabled={isRunning || !task} value="longbreak" onClick={() => selectTab("longbreak")}>Long Break</TabsTrigger>
+                    <TabsTrigger disabled={isRunning} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
+                    <TabsTrigger disabled={isRunning} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
+                    <TabsTrigger disabled={isRunning} value="longbreak" onClick={() => selectTab("longbreak")}>Long Break</TabsTrigger>
                 </TabsList>
                 <TabsContent value="focus" className="h-full">
                     <Card>
@@ -147,7 +147,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
                         <CardFooter>
                             <div className="flex gap-4">
                                 {!isRunning &&
-                                    <Button onClick={handleStart} disabled={!task}>
+                                    <Button onClick={handleStart}>
                                         <FiPlay /> Start
                                     </Button>
                                 }

@@ -47,7 +47,6 @@ export default function TaskList({ onTaskFocusStart, isTaskFocusComplete }: { on
 
   useEffect(() => {
     fetchTasks();
-    console.log("Focus final complete!")
   }, [isTaskFocusComplete]);
 
 

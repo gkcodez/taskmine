@@ -20,7 +20,9 @@ export default function Home() {
 
     const completeTaskFocus = async (task: ITask) => {
         setIsFocusComplete(false)
-        await incrementActualPomodoroCount(task)
+        if (task) {
+            await incrementActualPomodoroCount(task)
+        }
         setIsFocusComplete(true)
     }
 
