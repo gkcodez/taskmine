@@ -1,20 +1,20 @@
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/app/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { signin, signinWithGoogle } from "@/app/actions/auth/auth";
 
-import { Label } from "@/app/components/ui/label";
-import { Input } from "@/app/components/ui/input";
-import { Button } from "@/app/components/ui/button";
-import { Separator } from "@/app/components/ui/separator";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   CardHeader,
   CardContent,
   CardFooter,
   Card,
-} from "@/app/components/ui/card";
-import SignInWithGoogleButton from "@/app/components/auth/signin-with-google";
+} from "@/components/ui/card";
+import SignInWithGoogleButton from "@/components/auth/signin-with-google";
 
 export default async function SignInPage() {
   const supabase = await createClient();
@@ -54,7 +54,7 @@ export default async function SignInPage() {
             <Button formAction={signin} className="w-full">Sign in</Button>
           </form>
           <Separator />
-          <div className="space-y-4">
+          <div className="flex iterms-center justify-center w-full">
             <SignInWithGoogleButton />
           </div>
         </CardContent>

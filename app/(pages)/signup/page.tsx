@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createClient } from "@/app/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { signup } from "@/app/actions/auth/auth";
 
-import { Label } from "@/app/components/ui/label";
-import { Input } from "@/app/components/ui/input";
-import { Button } from "@/app/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   CardHeader,
   CardContent,
   CardFooter,
   Card,
-} from "@/app/components/ui/card";
+} from "@/components/ui/card";
 
 export default async function SignUpPage() {
   const supabase = await createClient();

@@ -1,7 +1,7 @@
 "use server";
 
-import { IPomodoro } from "@/app/models/pomodoro";
-import { createClient } from "@/app/utils/supabase/server";
+import { IPomodoro } from "@/models/pomodoro";
+import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function addPomodoro(pomodoro: IPomodoro) {

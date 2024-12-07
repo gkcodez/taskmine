@@ -1,10 +1,9 @@
 
 "use server";
 
-import { createClient } from "@/app/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
-import { ITask } from "@/app/models/task";
-import { IPomodoro } from "@/app/models/pomodoro";
+import { ITask } from "@/models/task";
 
 export async function addTask(task: ITask) {
   const supabase = await createClient();
@@ -154,7 +153,6 @@ export async function fetchAllTasks(orderby: string = "title", ascending: boolea
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
   const { data, error } = await supabase
     .from("tasks")
     .select()
@@ -166,7 +164,7 @@ export async function fetchAllTasks(orderby: string = "title", ascending: boolea
     throw new Error(error.message);
   }
   revalidatePath("/");
-  return data;
+  return data
 }
 
 export async function incrementTaskActualPomodoroCount(task: ITask) {
