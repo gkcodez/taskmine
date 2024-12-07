@@ -230,13 +230,13 @@ export default function LoginForm() {
 
   return (
     <main className="flex justify-center items-center min-h-screen">
-      <Card className="w-[380px]">
+      <Card className="w-[380px] flex flex-col items-center justify-center text-center">
         <CardHeader>
-          <CardTitle>Login</CardTitle>
+          <CardTitle>Taskmine</CardTitle>
           <CardDescription>Login to your account</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
+          {/* <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
               className="flex flex-col gap-2"
@@ -269,9 +269,9 @@ export default function LoginForm() {
               />
               {serverError && (
                 <p className="text-red-500 text-sm mt-2">{serverError}</p>
-              )}
-              {/* <Button type="submit">Register</Button> */}
-              <Button type="submit" disabled={isLoading}>
+              )} */}
+          {/* <Button type="submit">Register</Button> */}
+          {/* <Button type="submit" disabled={isLoading}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -280,15 +280,15 @@ export default function LoginForm() {
                 ) : (
                   "Login"
                 )}
-              </Button>
-              <Suspense fallback={<div>Loading...</div>}>
-                <GoogleSignin />
-              </Suspense>
-            </form>
-          </Form>
+              </Button> */}
+          <Suspense fallback={<div>Loading...</div>}>
+            <GoogleSignin />
+          </Suspense>
+          {/* </form>
+          </Form> */}
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <div className="text-muted-foreground text-sm">
+          {/* <div className="text-muted-foreground text-sm">
             Don&apos;t have an account?{" "}
             <Link href="/register" className="underline">
               Register
@@ -303,7 +303,7 @@ export default function LoginForm() {
             >
               Reset my password
             </Link>
-          </div>
+          </div> */}
         </CardFooter>
       </Card>
     </main>
