@@ -3,12 +3,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FiCheckSquare, FiMenu, FiMoon, FiSettings, FiSun } from "react-icons/fi";
+import { FiCheckSquare, FiLogOut, FiMoon, FiSettings, FiSun, FiTrash, FiUser } from "react-icons/fi";
 import SignOutButton from "../auth/signout-button";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { signout } from "@/app/actions/auth/auth";
 
 export default function Navbar({ user }: { user: any }) {
 
@@ -32,6 +33,9 @@ export default function Navbar({ user }: { user: any }) {
         setDarkMode(dark)
     }
 
+    const LogOut = async () => {
+        await signout()
+    }
 
 
     return (
@@ -43,13 +47,12 @@ export default function Navbar({ user }: { user: any }) {
                 </div >
             </div >
             <div className="flex items-center justify-center gap-2">
-                <h3>{user?.user_metadata?.name}</h3>
                 <TooltipProvider>
                     <Tooltip>
                         <TooltipTrigger asChild>
                             {
                                 !darkMode &&
-                                <Button variant="outline" onClick={toggleTheme} ><FiMoon /></Button>
+                                <Button variant="outline" size="icon" onClick={toggleTheme} ><FiMoon /></Button>
                             }
                         </TooltipTrigger>
                         <TooltipContent>
@@ -62,7 +65,7 @@ export default function Navbar({ user }: { user: any }) {
                         <TooltipTrigger asChild>
                             {
                                 darkMode &&
-                                <Button variant="outline" onClick={toggleTheme} ><FiSun /></Button>
+                                <Button variant="outline" size="icon" onClick={toggleTheme} ><FiSun /></Button>
                             }
                         </TooltipTrigger>
                         <TooltipContent>
@@ -70,17 +73,79 @@ export default function Navbar({ user }: { user: any }) {
                         </TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="outline"><FiSettings /></Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            <p>Settings</p>
-                        </TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
-                <SignOutButton />
+                <DropdownMenu>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <DropdownMenuTrigger asChild>
+                                    <Button type="button" variant="outline" size="icon">
+                                        <FiUser />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Profile: {user?.user_metadata?.name}</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="w-full flex align-center justify-start "
+                                        >
+                                            <FiUser /> Profile
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Profile</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="w-full flex align-center justify-start "
+                                        >
+                                            <FiSettings /> Settings
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Settings</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Button
+                                            variant="ghost"
+                                            className="w-full flex align-center justify-start "
+                                            onClick={LogOut}
+                                        >
+                                            <FiLogOut /> Logout
+                                        </Button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <p>Logout</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
 
             </div >
         </div >

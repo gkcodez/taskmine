@@ -108,12 +108,33 @@ export async function fetchPomodorosForLast7Days() {
 
     const pomodorosForLast7Days: Record<string, number> = {};
 
+    // Populate the data for existing entries
     data?.forEach(row => {
         const date = new Date(row.created_on).toISOString().split('T')[0]; // Extract date
         pomodorosForLast7Days[date] = (pomodorosForLast7Days[date] || 0) + row.actual_pomodoro_count; // Sum marks for each date
     });
 
-    const result = Object.entries(pomodorosForLast7Days).map(([date, focus]) => ({
+    // Generate last 7 days' dates
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const dateString = date.toISOString().split('T')[0];
+        if (!pomodorosForLast7Days[dateString]) {
+            pomodorosForLast7Days[dateString] = 0; // Insert 0 for missing dates
+        }
+    }
+
+    // Ensure dates are sorted (optional, if needed)
+    const sortedPomodorosForLast7Days = Object.keys(pomodorosForLast7Days)
+        .sort()
+        .reduce((acc, date) => {
+            acc[date] = pomodorosForLast7Days[date];
+            return acc;
+        }, {} as Record<string, number>);
+
+
+    const result = Object.entries(sortedPomodorosForLast7Days).map(([date, focus]) => ({
+        date,
         focus
     }));
 

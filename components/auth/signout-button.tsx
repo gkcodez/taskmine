@@ -11,12 +11,13 @@ export default function SignOutButton() {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button
-            variant="destructive"
+            variant="ghost"
+            className="w-full flex align-center justify-start "
             onClick={async () => {
               await signout();
             }}
           >
-            <FiLogOut />
+            <FiLogOut /> Logout
           </Button>
         </TooltipTrigger>
         <TooltipContent>

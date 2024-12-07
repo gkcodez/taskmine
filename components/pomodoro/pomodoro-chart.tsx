@@ -1,6 +1,6 @@
 "use client"
 
-import { TrendingUp } from "lucide-react"
+import { TrendingDown, TrendingUp } from "lucide-react"
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
 
 import {
@@ -21,7 +21,12 @@ import { fetchPomodorosForLast7Days } from "@/app/actions/pomodoro/pomodoro"
 import { useEffect, useState } from "react"
 
 
-let chartData = [{}]
+let chartData = [
+  {
+    focus: 0,
+    date: null
+  }
+]
 
 const chartConfig = {
   focus: {
@@ -30,6 +35,8 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
+let focusChangePercentage = 0
+
 export function PomodoroChart() {
 
 
@@ -37,6 +44,13 @@ export function PomodoroChart() {
     const pomodoroHistory = await fetchPomodorosForLast7Days();
     if (pomodoroHistory) {
       chartData = pomodoroHistory;
+      console.log(chartData)
+      const today = chartData[chartData.length - 1]; // Latest day (today)
+      const yesterday = chartData[chartData.length - 2]; // Previous day
+      const focusChange = (today.focus - yesterday.focus) / (yesterday.focus != 0 ? yesterday.focus : 1)
+      console.log(focusChange)
+      focusChangePercentage = focusChange * 100;
+      console.log(focusChangePercentage)
     }
   }
 
@@ -63,11 +77,23 @@ export function PomodoroChart() {
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
-                tickFormatter={(value) => value.slice(0, 3)}
+                interval={0} // Show all ticks
+                tickFormatter={(date: string) => {
+                  const formattedDate = new Date(date);
+
+                  // Check if the date is valid (not NaN)
+                  if (isNaN(formattedDate.getTime())) {
+                    return ''; // Return empty string if date is invalid
+                  }
+
+                  const day = String(formattedDate.getDate()).padStart(2, '0');
+                  const month = String(formattedDate.getMonth() + 1).padStart(2, '0');
+                  return `${day}/${month}`;
+                }}
               />
-              <ChartTooltip
+              < ChartTooltip
                 cursor={false}
-                content={<ChartTooltipContent hideLabel />}
+                content={< ChartTooltipContent hideLabel />}
               />
               <Bar dataKey="focus" fill="var(--color-focus)" radius={5} />
             </BarChart>
@@ -77,7 +103,24 @@ export function PomodoroChart() {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Increased by 5.2% today <TrendingUp className="h-4 w-4" />
+          {
+            focusChangePercentage == 0 &&
+            <div className="flex items-center justify-start gap-2 flex-wrap">
+              Changed by <span className="text-gray-600">{focusChangePercentage.toFixed(2)}%</span> today <TrendingUp className="h-4 w-4 text-gray-600" />
+            </div>
+          }
+          {
+            focusChangePercentage > 0 &&
+            <div className="flex items-center justify-start gap-2 flex-wrap">
+              Increased by <span className="text-green-600">{focusChangePercentage.toFixed(2)}%</span> today <TrendingUp className="h-4 w-4 text-green-600" />
+            </div>
+          }
+          {
+            focusChangePercentage < 0 &&
+            <div className="flex items-center justify-start gap-2 flex-wrap">
+              Decreased by <span className="text-red-600">{focusChangePercentage.toFixed(2)}%</span> today <TrendingDown className="h-4 w-4 text-red-600" />
+            </div>
+          }
         </div>
         <div className="leading-none text-muted-foreground">
           Showing pomodoros for the last 7 days

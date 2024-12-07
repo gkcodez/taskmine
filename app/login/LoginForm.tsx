@@ -229,7 +229,7 @@ export default function LoginForm() {
   const email = form.getValues("email");
 
   return (
-    <main className="flex justify-center items-center min-h-screen">
+    <main className="flex justify-center items-center min-h-screen bg-gray-300">
       <Card className="w-[380px] flex flex-col items-center justify-center text-center">
         <CardHeader>
           <CardTitle>Taskmine</CardTitle>
