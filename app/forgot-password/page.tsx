@@ -120,7 +120,7 @@ export default function ForgotPassword() {
             </Link>
           </div>
           <div className="text-muted-foreground text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="underline">
               Register
             </Link>
