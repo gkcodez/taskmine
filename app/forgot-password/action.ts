@@ -23,7 +23,7 @@ export const forgotPassword = async ({ email }: { email: string }) => {
   }
 
   // supabase authentication from here
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { error } = await supabase.auth.resetPasswordForEmail(email);
 

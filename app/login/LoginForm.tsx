@@ -174,7 +174,7 @@ import {
 import { passwordSchema } from "@/validation/passwordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { loginUser } from "./action";
@@ -281,7 +281,9 @@ export default function LoginForm() {
                   "Login"
                 )}
               </Button>
-              <GoogleSignin />
+              <Suspense fallback={<div>Loading...</div>}>
+                <GoogleSignin />
+              </Suspense>
             </form>
           </Form>
         </CardContent>

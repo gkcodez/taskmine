@@ -66,7 +66,7 @@ export const registerUser = async ({
   }
 
   // supabase authentication from here
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase.auth.signUp({
     email,
