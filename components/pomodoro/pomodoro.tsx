@@ -17,9 +17,9 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             LongBreak: "LongBreak",
         },
         Duration: {
-            Focus: 3,
-            ShortBreak: 3,
-            LongBreak: 3,
+            Focus: 1500,
+            ShortBreak: 300,
+            LongBreak: 900,
         }
     };
     const [timeRemaining, setTimeRemaining] = useState(timer.Duration.Focus)
