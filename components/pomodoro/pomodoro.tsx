@@ -17,7 +17,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             LongBreak: "LongBreak",
         },
         Duration: {
-            Focus: 3,
+            Focus: 1500,
             ShortBreak: 300,
             LongBreak: 900,
         }
