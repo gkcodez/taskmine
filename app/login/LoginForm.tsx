@@ -183,6 +183,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import GoogleSignin from "./GoogleSignin";
+import Image from "next/image";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -229,8 +230,8 @@ export default function LoginForm() {
   const email = form.getValues("email");
 
   return (
-    <main className="flex justify-center items-center min-h-screen bg-gray-300">
-      <Card className="w-[380px] flex flex-col items-center justify-center text-center">
+    <main className="flex justify-center items-center min-h-screen bg-gray-300 p-5">
+      <Card className="w-full lg:w-1/4 md:w-1/2 flex flex-col items-center justify-center text-center">
         <CardHeader>
           <CardTitle>Taskmine</CardTitle>
           <CardDescription>Login to your account</CardDescription>
@@ -281,7 +282,17 @@ export default function LoginForm() {
                   "Login"
                 )}
               </Button> */}
+
           <Suspense fallback={<div>Loading...</div>}>
+            <div className="relative w-full h-[20vh]">
+              <Image
+                src={"/images/login.png"}
+                alt="Empty task"
+                fill
+                className="object-contain"
+                priority={true}
+              />
+            </div>
             <GoogleSignin />
           </Suspense>
           {/* </form>

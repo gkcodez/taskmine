@@ -181,27 +181,32 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
                                     Long Break
                                 </TabsTrigger>
                             </TabsList>
-                            <TabsContent value="focus" className="flex-grow h-full">
-                                <div className="flex-col items-center justify-center gap-2 w-full h-full text-center p-2">
-                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
-                                        {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                            <div className="mt-2">
+                                <TabsContent value="focus" className="flex-grow h-full">
+                                    <div className="flex-col items-center justify-center gap-2 w-full h-full text-center">
+                                        <FiClock className="text-3xl w-full" />
+                                        <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
+                                            {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                                        </div>
                                     </div>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="shortbreak" className="flex-grow h-full">
-                                <div className="flex-col items-center justify-center gap-2 w-full text-center p-2">
-                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
-                                        {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                                </TabsContent>
+                                <TabsContent value="shortbreak" className="flex-grow h-full">
+                                    <div className="flex-col items-center justify-center gap-2 w-full text-center">
+                                        <FiClock className="text-3xl w-full" />
+                                        <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
+                                            {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                                        </div>
                                     </div>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="longbreak" className="flex-grow h-full">
-                                <div className="flex-col items-center justify-center gap-2 w-full text-center p-2">
-                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
-                                        {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                                </TabsContent>
+                                <TabsContent value="longbreak" className="flex-grow h-full">
+                                    <div className="flex-col items-center justify-center gap-2 w-full text-center">
+                                        <FiClock className="text-3xl w-full" />
+                                        <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
+                                            {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
+                                        </div>
                                     </div>
-                                </div>
-                            </TabsContent>
+                                </TabsContent>
+                            </div>
                         </Tabs>
                     }
                 </CardContent>
@@ -210,7 +215,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
                         task &&
                         <div className="flex items-center justify-center w-full gap-2">
                             {!isRunning &&
-                                <Button onClick={handleStart} className="bg-red-700">
+                                <Button onClick={handleStart}>
                                     <FiPlay /> Start
                                 </Button>
                             }
