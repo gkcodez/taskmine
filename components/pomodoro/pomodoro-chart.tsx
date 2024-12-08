@@ -61,16 +61,20 @@ export function PomodoroChart() {
 
 
   return (
-    <Card className="w-full">
+    <Card className="flex flex-col items-start justify-start w-full h-full">
       <CardHeader className="flex items-start justify-center w-full">
         <CardTitle>Pomodoro Chart</CardTitle>
         <CardDescription>Last 7 days</CardDescription>
       </CardHeader>
-      <CardContent>
-        {
-          chartData &&
-          <ChartContainer config={chartConfig}>
-            <BarChart accessibilityLayer data={chartData}>
+      <CardContent className="h-full w-full">
+        {chartData && (
+          <ChartContainer config={chartConfig} className="h-full w-full max-w-full">
+            <BarChart
+              accessibilityLayer
+              data={chartData}
+              width={undefined} // Allow it to use the parent's width
+              className="w-full max-w-full h-full"
+            >
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="date"
@@ -91,16 +95,16 @@ export function PomodoroChart() {
                   return `${day}/${month}`;
                 }}
               />
-              < ChartTooltip
+              <ChartTooltip
                 cursor={false}
-                content={< ChartTooltipContent hideLabel />}
+                content={<ChartTooltipContent hideLabel />}
               />
               <Bar dataKey="focus" fill="var(--color-focus)" radius={5} />
             </BarChart>
           </ChartContainer>
-        }
-
+        )}
       </CardContent>
+
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
           {
@@ -121,9 +125,6 @@ export function PomodoroChart() {
               Decreased by <span className="text-red-600">{focusChangePercentage.toFixed(2)}%</span> today <TrendingDown className="h-4 w-4 text-red-600" />
             </div>
           }
-        </div>
-        <div className="leading-none text-muted-foreground">
-          Showing pomodoros for the last 7 days
         </div>
       </CardFooter>
     </Card>

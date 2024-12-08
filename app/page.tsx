@@ -39,13 +39,13 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="flex flex-col items-center sm:justify-center justify-start w-full h-full">
+    <main className="flex flex-col items-center sm:justify-center justify-start w-full  min-h-[calc(100vh-90px)]">
       <Navbar user={currentUser} />
-      <div className="flex flex-col lg:flex-row gap-2 p-2 w-full">
-        <div className="lg:basis-9/12 w-full">
+      <div className="flex flex-col xl:flex-row gap-2 p-2 w-full min-h-[calc(100vh-90px)]">
+        <div className="xl:basis-9/12 w-full">
           <TaskList onTaskFocusStart={(task: ITask) => startTaskFocus(task)} isTaskFocusComplete={isFocusComplete} />
         </div>
-        <div className="lg:basis-3/12 w-full">
+        <div className="xl:basis-3/12 w-full">
           <Pomodoro task={selectedTask} onTaskFocusComplete={completeTaskFocus} />
         </div>
       </div>

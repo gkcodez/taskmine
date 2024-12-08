@@ -17,7 +17,7 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
             LongBreak: "LongBreak",
         },
         Duration: {
-            Focus: 1500,
+            Focus: 3,
             ShortBreak: 300,
             LongBreak: 900,
         }
@@ -131,192 +131,107 @@ export default function Pomodoro({ task, onTaskFocusComplete }: { task: ITask | 
 
 
     return (
-        <div className="flex flex-col min-h-[calc(100vh-90px)] gap-2">
-            <Tabs defaultValue="focus" value={selectedTab} onValueChange={onTabChange} className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger disabled={isRunning || !task} value="focus" onClick={() => selectTab("focus")}>Focus</TabsTrigger>
-                    <TabsTrigger disabled={isRunning || !task} value="shortbreak" onClick={() => selectTab("shortbreak")}>Short Break</TabsTrigger>
-                    <TabsTrigger disabled={isRunning || !task} value="longbreak" onClick={() => selectTab("longbreak")}>Long Break</TabsTrigger>
-                </TabsList>
-                <TabsContent value="focus" className="h-full">
-                    <Card>
-                        <CardHeader className="w-full">
-                            <CardTitle className="flex items-center justify-start gap-2 text-center w-full"><FiPlay />Focus</CardTitle>
-                            <CardDescription>
-                                {
-                                    !task &&
-                                    <p className="flex items-center justify-start gap-1">Select a task using the <FiPlay className="text-xl" /> icon </p>
-                                }
-                                {
-                                    task &&
-                                    <p className="flex items-center justify-start gap-1">{task.title} </p>
-                                }
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            {
-                                task &&
-                                <div className="flex-col items-center justify-center gap-2 w-full text-center">
-                                    <FiBell className="text-5xl w-full" />
-                                    <div className="text-8xl font-bold text-gray-900 dark:text-gray-50">
+        <div className="flex flex-col w-full h-full gap-2">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Pomodoro Timer</CardTitle>
+                    <CardDescription className="flex items-center justify-start gap-2">Select a task using the <FiPlay /> icon</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {
+                        !task &&
+                        <div className="relative w-full h-[20vh]">
+                            <Image
+                                src={"/images/focus.png"}
+                                alt="Empty task"
+                                fill
+                                className="object-contain"
+                                priority={true}
+                            />
+                        </div>
+                    }
+                    {
+                        task &&
+                        <Tabs
+                            defaultValue="focus"
+                            value={selectedTab}
+                            onValueChange={onTabChange}
+                            className="flex-grow w-full h-full"
+                        >
+                            <TabsList className="grid w-full grid-cols-3">
+                                <TabsTrigger
+                                    disabled={isRunning || !task}
+                                    value="focus"
+                                    onClick={() => selectTab("focus")}
+                                >
+                                    Focus
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    disabled={isRunning || !task}
+                                    value="shortbreak"
+                                    onClick={() => selectTab("shortbreak")}
+                                >
+                                    Short Break
+                                </TabsTrigger>
+                                <TabsTrigger
+                                    disabled={isRunning || !task}
+                                    value="longbreak"
+                                    onClick={() => selectTab("longbreak")}
+                                >
+                                    Long Break
+                                </TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="focus" className="flex-grow h-full">
+                                <div className="flex-col items-center justify-center gap-2 w-full h-full text-center p-2">
+                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
                                         {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
                                     </div>
                                 </div>
-                            }
-                            {
-                                !task &&
-                                <div className="flex flex-col items-center justify-center w-full">
-                                    <Image src={"/images/focus.png"}
-                                        alt="Empty task"
-                                        width={250}
-                                        height={100}
-                                        priority={true}
-                                    />
-                                </div>
-                            }
-                        </CardContent>
-                        <CardFooter>
-                            {
-                                task &&
-                                <div className="flex items-center justify-center w-full gap-2">
-                                    {!isRunning &&
-                                        <Button onClick={handleStart}>
-                                            <FiPlay /> Start
-                                        </Button>
-                                    }
-                                    {
-                                        isRunning && <Button onClick={handlePause}>
-                                            <FiPause /> Pause
-                                        </Button>
-                                    }
-
-                                    <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset
-                                    </Button>
-
-                                    <Button onClick={handleSkip}>
-                                        <FiSkipForward /> Skip
-                                    </Button>
-                                </div>
-                            }
-                        </CardFooter>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="shortbreak" className="h-full">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Short Break</CardTitle>
-                            <CardDescription>
-                                Time to take a short break.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            {
-                                task &&
-                                <div className="flex-col items-center justify-center gap-2 w-full text-center">
-                                    <FiBell className="text-5xl w-full" />
-                                    <div className="text-8xl font-bold text-gray-900 dark:text-gray-50">
+                            </TabsContent>
+                            <TabsContent value="shortbreak" className="flex-grow h-full">
+                                <div className="flex-col items-center justify-center gap-2 w-full text-center p-2">
+                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
                                         {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
                                     </div>
                                 </div>
-                            }
-                            {
-                                !task &&
-                                <div className="flex flex-col items-center justify-center w-full">
-                                    <Image src={"/images/focus.png"}
-                                        alt="Empty task"
-                                        width={250}
-                                        height={100}
-                                        priority={true}
-                                    />
-                                </div>
-                            }
-                        </CardContent>
-                        <CardFooter>
-                            {
-                                task &&
-                                <div className="flex items-center justify-center w-full gap-2">
-                                    {!isRunning &&
-                                        <Button onClick={handleStart}>
-                                            <FiPlay /> Start
-                                        </Button>
-                                    }
-                                    {
-                                        isRunning && <Button onClick={handlePause}>
-                                            <FiPause /> Pause
-                                        </Button>
-                                    }
-
-                                    <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset
-                                    </Button>
-
-                                    <Button onClick={handleSkip}>
-                                        <FiSkipForward /> Skip
-                                    </Button>
-                                </div>
-                            }
-                        </CardFooter>
-                    </Card>
-                </TabsContent>
-                <TabsContent value="longbreak" className="h-full">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center justify-start gap-2"><FiBell /> Long Break</CardTitle>
-                            <CardDescription>
-                                Time to relax!
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                            {
-                                task &&
-                                <div className="flex-col items-center justify-center gap-2 w-full text-center">
-                                    <FiBell className="text-5xl w-full" />
-                                    <div className="text-8xl font-bold text-gray-900 dark:text-gray-50">
+                            </TabsContent>
+                            <TabsContent value="longbreak" className="flex-grow h-full">
+                                <div className="flex-col items-center justify-center gap-2 w-full text-center p-2">
+                                    <div className="text-7xl font-bold text-gray-900 dark:text-gray-50">
                                         {Math.floor(timeRemaining / 60)}:{String(timeRemaining % 60).padStart(2, "0")}
                                     </div>
                                 </div>
+                            </TabsContent>
+                        </Tabs>
+                    }
+                </CardContent>
+                <CardFooter>
+                    {
+                        task &&
+                        <div className="flex items-center justify-center w-full gap-2">
+                            {!isRunning &&
+                                <Button onClick={handleStart} className="bg-red-700">
+                                    <FiPlay /> Start
+                                </Button>
                             }
                             {
-                                !task &&
-                                <div className="flex flex-col items-center justify-center w-full">
-                                    <Image src={"/images/focus.png"}
-                                        alt="Empty task"
-                                        width={250}
-                                        height={100}
-                                        priority={true}
-                                    />
-                                </div>
+                                isRunning && <Button onClick={handlePause}>
+                                    <FiPause /> Pause
+                                </Button>
                             }
-                        </CardContent>
-                        <CardFooter>
-                            {
-                                task &&
-                                <div className="flex items-center justify-center w-full gap-2">
-                                    {!isRunning &&
-                                        <Button onClick={handleStart}>
-                                            <FiPlay /> Start
-                                        </Button>
-                                    }
-                                    {
-                                        isRunning && <Button onClick={handlePause}>
-                                            <FiPause /> Pause
-                                        </Button>
-                                    }
 
-                                    <Button onClick={handleReset}>
-                                        <FiRefreshCw /> Reset
-                                    </Button>
+                            <Button onClick={handleReset}>
+                                <FiRefreshCw /> Reset
+                            </Button>
 
-                                    <Button onClick={handleSkip}>
-                                        <FiSkipForward /> Skip
-                                    </Button>
-                                </div>
-                            }
-                        </CardFooter>
-                    </Card>
-                </TabsContent>
-            </Tabs>
+                            <Button onClick={handleSkip}>
+                                <FiSkipForward /> Skip
+                            </Button>
+                        </div>
+                    }
+
+                </CardFooter>
+            </Card>
             <PomodoroChart />
         </div>
     )
